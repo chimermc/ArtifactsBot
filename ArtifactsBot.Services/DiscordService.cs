@@ -2,6 +2,7 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using System.Text.RegularExpressions;
 using static ArtifactsBot.Services.Enums;
 
 namespace ArtifactsBot.Services;
@@ -10,6 +11,7 @@ public partial class DiscordService
 {
     private readonly AppInsightsLogService _logService;
     private readonly ArtifactsService _artifactsService;
+    private readonly DiscordSocketClient _client;
     private readonly string _token;
 
     public DiscordService(AppInsightsLogService logService, ArtifactsService artifactsService, string token)
@@ -17,24 +19,24 @@ public partial class DiscordService
         _logService = logService;
         _artifactsService = artifactsService;
         _token = token;
-    }
-
-    public async Task RunAsync(CancellationToken cancellationToken)
-    {
-        DiscordSocketClient client = new(new DiscordSocketConfig
+        _client = new DiscordSocketClient(new DiscordSocketConfig
         {
-            GatewayIntents = GatewayIntents.None
+            GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.MessageContent
         });
-        client.Log += Log;
-        client.SlashCommandExecuted += SlashCommandHandler;
+        _client.Log += Log;
+        _client.SlashCommandExecuted += SlashCommandHandler;
+        _client.MessageReceived += MessageReceivedHandler;
 
 #if DEBUG
         // This shouldn't be called on every app startup. Only run manually, one time, when command signatures have changed.
         //client.Ready += () => AddCommands(client);
 #endif
+    }
 
-        await client.LoginAsync(TokenType.Bot, _token);
-        await client.StartAsync();
+    public async Task RunAsync(CancellationToken cancellationToken)
+    {
+        await _client.LoginAsync(TokenType.Bot, _token);
+        await _client.StartAsync();
 
         await Task.Delay(Timeout.Infinite, cancellationToken);
     }
@@ -81,6 +83,31 @@ public partial class DiscordService
             _logService.LogCritical($"Unhandled exception when {logMessage}: {ex}", properties: new Dictionary<string, string> { { "ReferenceCode", referenceCode } });
             await command.RespondAsync($"An unhandled exception occurred (reference code: `{referenceCode}`).");
         }
+    }
+
+    private async Task MessageReceivedHandler(SocketMessage message)
+    {
+        if (message.Author.IsBot || string.IsNullOrWhiteSpace(message.Content)) { return; }
+
+        var match = Regex.Matches(message.Content, """\[\[[a-zA-Z_\s&]{2,50}]]""").FirstOrDefault();
+        if (match == null) { return; }
+
+        string value = match.Value.TrimStart('[').TrimEnd(']').Trim().ToCodeFormat();
+
+        try
+        {
+            var item = GetItem(value);
+            await message.Channel.SendMessageAsync(embed: BuildItemEmbed(item));
+            return;
+        }
+        catch (ControlException ex) when (ex.Reason == ControlReason.CommandResponse) { }
+
+        try
+        {
+            var monster = GetMonster(value);
+            await message.Channel.SendMessageAsync(embed: BuildMonsterEmbed(monster));
+        }
+        catch (ControlException ex) when (ex.Reason == ControlReason.CommandResponse) { }
     }
 
     #region Commands
@@ -271,7 +298,9 @@ public partial class DiscordService
     {
         string message = logMessage.Exception is CommandException ex
             ? ex.ToString()
-            : logMessage.Message;
+            : string.IsNullOrEmpty(logMessage.Message)
+                ? logMessage.ToString()
+                : logMessage.Message;
 
         switch (logMessage.Severity)
         {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ArtifactsBot.Services;
+﻿namespace ArtifactsBot.Services;
 
 /// <summary>
 /// An exception easily identifiable as being thrown by this application for control flow reasons.
