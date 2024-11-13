@@ -109,6 +109,8 @@ public partial class ArtifactsService
 
     public List<ItemSchema> GetItemsWithThisCraftIngredient(string itemCode) => _items.Values.Where(i => i.Craft != null && i.Craft.Items.Any(c => c.Code == itemCode)).ToList();
 
+    public List<MonsterSchema> GetMonstersThatDropThisItem(string itemCode) => _monsters.Values.Where(m => m.Drops.Any(d => d.Code == itemCode)).ToList();
+
     public static ItemSlot? GetSlotForItem(ItemSchema item)
     {
         if (item.Type == null) { return null; }

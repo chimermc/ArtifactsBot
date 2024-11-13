@@ -79,6 +79,12 @@ public partial class DiscordService
             builder.AddField("Used to Craft", string.Join(Environment.NewLine, usedToCraft.Select(i => $"`{i.Code}`")));
         }
 
+        var droppedByMonsters = _artifactsService.GetMonstersThatDropThisItem(item.Code);
+        if (droppedByMonsters.Count > 0)
+        {
+            builder.AddField("Dropped By", string.Join(Environment.NewLine, droppedByMonsters.Select(m => $"`{m.Code}` (1/{m.Drops.First(d => d.Code == item.Code).Rate})")));
+        }
+
         return builder.Build();
     }
 
