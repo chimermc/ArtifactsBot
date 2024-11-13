@@ -35,10 +35,10 @@ public partial class DiscordService
         if (character.Attack_air > 0) { attacks.Add($"Air: {(int)Math.Round(character.Attack_air * (1 + character.Dmg_air / 100.0f))}"); }
 
         List<string> resistances = new(4);
-        if (character.Res_fire > 0) { resistances.Add($"Fire: {character.Res_fire}%"); }
-        if (character.Res_earth > 0) { resistances.Add($"Earth: {character.Res_earth}%"); }
-        if (character.Res_water > 0) { resistances.Add($"Water: {character.Res_water}%"); }
-        if (character.Res_air > 0) { resistances.Add($"Air: {character.Res_air}%"); }
+        if (character.Res_fire != 0) { resistances.Add($"Fire: {character.Res_fire}%"); }
+        if (character.Res_earth != 0) { resistances.Add($"Earth: {character.Res_earth}%"); }
+        if (character.Res_water != 0) { resistances.Add($"Water: {character.Res_water}%"); }
+        if (character.Res_air != 0) { resistances.Add($"Air: {character.Res_air}%"); }
 
         var builder = new EmbedBuilder()
             .WithTitle(character.Name)
@@ -64,7 +64,7 @@ public partial class DiscordService
 
         if (item.Effects.Count > 0)
         {
-            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{Constants.GetEffectCodeDisplayName(e.Name)}: {e.Value}")), true);
+            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{e.Value} {Constants.GetEffectCodeDisplayName(e.Name)}")), true);
         }
 
         if (item.Craft != null)
@@ -97,10 +97,10 @@ public partial class DiscordService
         if (monster.Attack_air > 0) { attacks.Add($"Air: {monster.Attack_air}"); }
 
         List<string> resistances = new(4);
-        if (monster.Res_fire > 0) { resistances.Add($"Fire: {monster.Res_fire}%"); }
-        if (monster.Res_earth > 0) { resistances.Add($"Earth: {monster.Res_earth}%"); }
-        if (monster.Res_water > 0) { resistances.Add($"Water: {monster.Res_water}%"); }
-        if (monster.Res_air > 0) { resistances.Add($"Air: {monster.Res_air}%"); }
+        if (monster.Res_fire != 0) { resistances.Add($"Fire: {monster.Res_fire}%"); }
+        if (monster.Res_earth != 0) { resistances.Add($"Earth: {monster.Res_earth}%"); }
+        if (monster.Res_water != 0) { resistances.Add($"Water: {monster.Res_water}%"); }
+        if (monster.Res_air != 0) { resistances.Add($"Air: {monster.Res_air}%"); }
 
         var builder = new EmbedBuilder()
             .WithTitle($"{monster.Name} (`{monster.Code}`)")
