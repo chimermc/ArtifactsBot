@@ -93,11 +93,13 @@ public partial class DiscordService
         if (match == null) { return; }
 
         string value = match.Value.TrimStart('[').TrimEnd(']').Trim().ToCodeFormat();
+        string logMessage = $"{message.Author.Username} mentioned '{value}', which ";
 
         try
         {
             var item = GetItem(value);
             await message.Channel.SendMessageAsync(embed: BuildItemEmbed(item));
+            _logService.LogInfo(logMessage + "matched an item");
             return;
         }
         catch (ControlException ex) when (ex.Reason == ControlReason.CommandResponse) { }
@@ -106,8 +108,12 @@ public partial class DiscordService
         {
             var monster = GetMonster(value);
             await message.Channel.SendMessageAsync(embed: BuildMonsterEmbed(monster));
+            _logService.LogInfo(logMessage + "matched a monster");
+            return;
         }
         catch (ControlException ex) when (ex.Reason == ControlReason.CommandResponse) { }
+
+        _logService.LogWarning(logMessage + "did not match anything");
     }
 
     #region Commands

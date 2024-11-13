@@ -119,7 +119,7 @@ public partial class DiscordService
 
         StringBuilder message = new(isDeterministic
             ? $"This fight is deterministic since neither fighter can block. The player {(wins > 0 ? "won" : "lost")} the fight."
-            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)} win rate).");
+            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)}win rate).");
         message.AppendLine();
 
         const string rounding = "0.0";
