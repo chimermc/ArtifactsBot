@@ -56,6 +56,42 @@ public class Constants
     public const string Restore = "restore";
     public const string Woodcutting = "woodcutting";
 
+    public static string GetEffectCodeDisplayName(string effectCode) => effectCode switch
+    {
+        Alchemy => "% Alchemy CD",
+        AirAttack => "Air Attack",
+        EarthAttack => "Earth Attack",
+        FireAttack => "Fire Attack",
+        WaterAttack => "Water Attack",
+        AirDamageBoost => "% Air Damage Boost",
+        EarthDamageBoost => "% Earth Damage Boost",
+        FireDamageBoost => "% Fire Damage Boost",
+        WaterDamageBoost => "% Water Damage Boost",
+        HpBoost => "HP Boost",
+        AirResistBoost => "% Air Res Boost",
+        EarthResistBoost => "% Earth Res Boost",
+        FireResistBoost => "% Fire Res Boost",
+        WaterResistBoost => "% Water Res Boost",
+        AirDamage => "% Air Damage",
+        EarthDamage => "% Earth Damage",
+        FireDamage => "% Fire Damage",
+        WaterDamage => "% Water Damage",
+        Fishing => "% Fishing CD",
+        Gold => "Gold",
+        Haste => "Haste",
+        Heal => "HP Heal",
+        Hp => "Max HP",
+        InventorySpace => "Inventory Space",
+        Mining => "% Mining CD",
+        AirResist => "% Res Air",
+        EarthResist => "% Res Earth",
+        FireResist => "% Res Fire",
+        WaterResist => "% Res Water",
+        Restore => "HP Restore",
+        Woodcutting => "% Woodcutting CD",
+        (_) => effectCode
+    };
+
     #endregion EffectCodes
 
     public static string GetCharacterImageUrl(CharacterSkin skin) => $"https://artifactsmmo.com/images/characters/{skin.ToString().ToLowerInvariant()}.png";

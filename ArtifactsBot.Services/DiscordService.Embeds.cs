@@ -60,8 +60,12 @@ public partial class DiscordService
             .WithThumbnailUrl(Constants.GetItemImageUrl(item.Code))
             .AddField("Type", item.Type.ToInvisibleEmbedIfEmpty(), true)
             .AddField("Subtype", item.Subtype.ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Level", item.Level.ToString(), true)
-            .AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{e.Name}: {e.Value}")).ToInvisibleEmbedIfEmpty(), true);
+            .AddField("Level", item.Level.ToString(), true);
+
+        if (item.Effects.Count > 0)
+        {
+            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{Constants.GetEffectCodeDisplayName(e.Name)}: {e.Value}")), true);
+        }
 
         if (item.Craft != null)
         {
@@ -119,7 +123,7 @@ public partial class DiscordService
 
         StringBuilder message = new(isDeterministic
             ? $"This fight is deterministic since neither fighter can block. The player {(wins > 0 ? "won" : "lost")} the fight."
-            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)}win rate).");
+            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)} win rate).");
         message.AppendLine();
 
         const string rounding = "0.0";
