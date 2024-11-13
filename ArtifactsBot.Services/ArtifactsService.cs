@@ -8,8 +8,9 @@ public partial class ArtifactsService
 {
     private readonly AppInsightsLogService _logService;
     private readonly ArtifactsClient _client;
-    private readonly ReadOnlyDictionary<string, ItemSchema> _items;
-    private readonly ReadOnlyDictionary<string, MonsterSchema> _monsters;
+    private ReadOnlyDictionary<string, ItemSchema> _items;
+    private ReadOnlyDictionary<string, MonsterSchema> _monsters;
+    private string _serverVersion;
 
     public ArtifactsService(AppInsightsLogService logService)
     {
@@ -17,14 +18,22 @@ public partial class ArtifactsService
         HttpClientHandler handler = new() { UseCookies = false };
         HttpClient serviceHttpClient = new(handler);
         _client = new ArtifactsClient(Constants.BaseUrl, serviceHttpClient);
+        var statusTask = GetStatus();
         var itemsTask = GetAllItems();
         var monstersTask = GetAllMonsters();
-        Task.Run(() => Task.WhenAll(itemsTask, monstersTask));
+        Task.Run(() => Task.WhenAll(statusTask, itemsTask, monstersTask));
+        _serverVersion = statusTask.Result.Version;
         _items = itemsTask.Result;
         _monsters = monstersTask.Result;
     }
 
     #region Data
+
+    public async Task<StatusSchema> GetStatus(CancellationToken cancellationToken = default)
+    {
+        var response = await DoWithRetry(_client.Get_status__getAsync, cancellationToken);
+        return response.Data;
+    }
 
     private async Task<ReadOnlyDictionary<string, ItemSchema>> GetAllItems(CancellationToken cancellationToken = default)
     {
@@ -114,6 +123,20 @@ public partial class ArtifactsService
     }
 
     #endregion Data
+
+    public async Task<bool> CheckForServerUpdate(CancellationToken cancellationToken = default)
+    {
+        var status = await GetStatus(cancellationToken);
+        if (status.Version == _serverVersion) { return false; }
+
+        _serverVersion = status.Version;
+        var itemsTask = GetAllItems(cancellationToken);
+        var monstersTask = GetAllMonsters(cancellationToken);
+        await Task.WhenAll(itemsTask, monstersTask);
+        _items = itemsTask.Result;
+        _monsters = monstersTask.Result;
+        return true;
+    }
 
     // 478: Insufficient items in inventory
     // 429: CloudFlare rate limiting

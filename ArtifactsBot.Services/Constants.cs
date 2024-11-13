@@ -4,6 +4,7 @@ public class Constants
 {
     public const string BaseUrl = "https://api.artifactsmmo.com";
     public const int MaxRetries = 5;
+    public const int ServerUpdateCheckIntervalMilliseconds = 60000; // 1 minute
 
     public const string CommandSimulate = "simulate";
     public const string CommandSimulateCharacter = "simulate-character";

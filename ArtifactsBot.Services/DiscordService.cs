@@ -38,7 +38,11 @@ public partial class DiscordService
         await _client.LoginAsync(TokenType.Bot, _token);
         await _client.StartAsync();
 
-        await Task.Delay(Timeout.Infinite, cancellationToken);
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            await Task.Delay(Constants.ServerUpdateCheckIntervalMilliseconds, cancellationToken);
+            await _artifactsService.CheckForServerUpdate(cancellationToken);
+        }
     }
 
     private async Task SlashCommandHandler(SocketSlashCommand command)
