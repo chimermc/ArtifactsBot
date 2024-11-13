@@ -18,7 +18,7 @@ public class DiscordBackgroundService : BackgroundService
         _logService.LogInfo("Service is starting.");
 
 #if !DEBUG
-        await Task.Delay(60000, cancellationToken); // Wait some time to ensure the previous instance is finished after deployments or app restarts
+        await Task.Delay(30000, cancellationToken); // Wait some time to ensure the previous instance is finished after deployments or app restarts
 #endif
 
         while (!cancellationToken.IsCancellationRequested)
