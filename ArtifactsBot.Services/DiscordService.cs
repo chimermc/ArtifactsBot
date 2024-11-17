@@ -41,7 +41,14 @@ public partial class DiscordService
         while (!cancellationToken.IsCancellationRequested)
         {
             await Task.Delay(Constants.ServerUpdateCheckIntervalMilliseconds, cancellationToken);
-            await _artifactsService.CheckForServerUpdate(cancellationToken);
+            try
+            {
+                await _artifactsService.CheckForServerUpdate(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogCritical("Exception when checking server status: " + ex);
+            }
         }
     }
 
@@ -93,7 +100,7 @@ public partial class DiscordService
     {
         if (message.Author.IsBot || string.IsNullOrWhiteSpace(message.Content)) { return; }
 
-        var match = Regex.Matches(message.Content, """\[\[[a-zA-Z_\s&]{2,50}]]""").FirstOrDefault();
+        var match = MessageTag().Matches(message.Content).FirstOrDefault();
         if (match == null) { return; }
 
         string value = match.Value.TrimStart('[').TrimEnd(']').Trim().ToCodeFormat();
@@ -271,7 +278,7 @@ public partial class DiscordService
         {
             return await _artifactsService.GetCharacter(characterName);
         }
-        catch (ApiException ex) when (ex.StatusCode == 404)
+        catch (ApiException ex) when (ex.StatusCode is 404 or 422)
         {
             throw new ControlException(ControlReason.CommandResponse, "No character with that name exists. (This lookup is case-sensitive.)");
         }
@@ -379,4 +386,7 @@ public partial class DiscordService
             _logService.LogCritical(ex.ToString());
         }
     }
+
+    [GeneratedRegex("""\[\[[a-z_\s&]{2,50}]]""", RegexOptions.IgnoreCase)]
+    private static partial Regex MessageTag();
 }

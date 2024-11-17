@@ -58,8 +58,8 @@ public partial class DiscordService
         var builder = new EmbedBuilder()
             .WithTitle($"{item.Name} (`{item.Code}`)")
             .WithThumbnailUrl(Constants.GetItemImageUrl(item.Code))
-            .AddField("Type", item.Type.ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Subtype", item.Subtype.ToInvisibleEmbedIfEmpty(), true)
+            .AddField("Type", item.Type.Replace('_', ' ').ToTitleCase().ToInvisibleEmbedIfEmpty(), true)
+            .AddField("Subtype", item.Subtype.Replace('_', ' ').ToTitleCase().ToInvisibleEmbedIfEmpty(), true)
             .AddField("Level", item.Level.ToString(), true);
 
         if (item.Effects.Count > 0)
