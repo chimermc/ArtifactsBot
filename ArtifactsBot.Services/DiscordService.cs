@@ -352,7 +352,7 @@ public partial class DiscordService
                 .WithDescription("Simulates a battle between a monster and a character with the specified items equipped.")
                 .AddOption(Constants.CommandMonsterParameter, ApplicationCommandOptionType.String, Constants.CommandMonsterParameterDescription, isRequired: true)
                 .AddOption(Constants.CommandItemsParameter, ApplicationCommandOptionType.String, "The codes or names of the items equipped, separated by commas.", isRequired: true)
-                .AddOption(Constants.CommandLevelParameter, ApplicationCommandOptionType.Integer, "Player level (defaults to 40).", isRequired: false),
+                .AddOption(Constants.CommandLevelParameter, ApplicationCommandOptionType.Integer, "Character level, used to calculate Max HP.", isRequired: true),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandSimulateCharacter)
                 .WithDescription("Simulates a battle between a monster and a specific character.")
