@@ -6,13 +6,6 @@ public class Constants
     public const int MaxRetries = 5;
     public const int ServerUpdateCheckIntervalMilliseconds = 60000; // 1 minute
 
-    public const string CommandSimulate = "simulate";
-    public const string CommandSimulateCharacter = "simulate-character";
-    public const string CommandCharacter = "character";
-    public const string CommandCharacterEquipment = "character-equipment";
-    public const string CommandMonster = "monster";
-    public const string CommandItem = "item";
-
     public const int FightSimulatorIterations = 1000;
     public const int CharacterBaseHp = 120;
     public const int CharacterHpPerLevel = 5;
@@ -21,6 +14,25 @@ public class Constants
     /// Embed field values cannot be truly empty, but can contain something invisible instead.
     /// </summary>
     public const string EmbedEmptyItem = "** **";
+
+    #region Commands
+
+    public const string CommandSimulate = "simulate";
+    public const string CommandSimulateCharacter = "simulate-character";
+    public const string CommandCharacter = "character";
+    public const string CommandCharacterEquipment = "character-equipment";
+    public const string CommandMonster = "monster";
+    public const string CommandItem = "item";
+
+    public const string CommandNameParameter = "name";
+    public const string CommandNameParameterDescription = "The name of the character (case sensitive).";
+    public const string CommandMonsterParameter = "monster";
+    public const string CommandMonsterParameterDescription = "The code or name of the monster.";
+    public const string CommandItemsParameter = "items";
+    public const string CommandItemParameter = "item";
+    public const string CommandLevelParameter = "level";
+
+    #endregion Commands
 
     #region EffectCodes
 

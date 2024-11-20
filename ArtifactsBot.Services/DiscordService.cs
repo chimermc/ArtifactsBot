@@ -131,27 +131,27 @@ public partial class DiscordService
 
     private async Task SimulateCommand(SocketSlashCommand command)
     {
-        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == "monster")?.Value.ToString()?.Trim();
+        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandMonsterParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(monsterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `monster`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandMonsterParameter}`.");
         }
 
-        string? inputItems = command.Data.Options.FirstOrDefault(o => o.Name == "items")?.Value.ToString()?.Trim();
+        string? inputItems = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandItemsParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(inputItems))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `items`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandItemsParameter}`.");
         }
 
-        string? inputLevel = command.Data.Options.FirstOrDefault(o => o.Name == "level")?.Value.ToString()?.Trim();
+        string? inputLevel = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandLevelParameter)?.Value.ToString()?.Trim();
         int level = 40;
         if (!string.IsNullOrEmpty(inputLevel) && !int.TryParse(inputLevel, out level))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `level`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandLevelParameter}`.");
         }
         if (level is < 1 or > 40)
         {
-            throw new ControlException(ControlReason.CommandResponse, "`level` must be between 1 and 40.");
+            throw new ControlException(ControlReason.CommandResponse, $"`{Constants.CommandLevelParameter}` must be between 1 and 40.");
         }
 
         var monster = GetMonster(monsterName);
@@ -202,16 +202,16 @@ public partial class DiscordService
 
     private async Task SimulateCharacterCommand(SocketSlashCommand command)
     {
-        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == "name")?.Value.ToString()?.Trim();
+        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandNameParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(characterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `name`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandNameParameter}`.");
         }
 
-        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == "monster")?.Value.ToString()?.Trim();
+        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandMonsterParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(monsterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `monster`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandMonsterParameter}`.");
         }
 
         var monster = GetMonster(monsterName);
@@ -224,10 +224,10 @@ public partial class DiscordService
 
     private async Task CharacterCommand(SocketSlashCommand command)
     {
-        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == "name")?.Value.ToString()?.Trim();
+        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandNameParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(characterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `name`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandNameParameter}`.");
         }
 
         var character = await GetCharacter(characterName);
@@ -236,10 +236,10 @@ public partial class DiscordService
 
     private async Task CharacterEquipmentCommand(SocketSlashCommand command)
     {
-        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == "name")?.Value.ToString()?.Trim();
+        string? characterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandNameParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(characterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `name`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandNameParameter}`.");
         }
 
         var character = await GetCharacter(characterName);
@@ -248,10 +248,10 @@ public partial class DiscordService
 
     private async Task MonsterCommand(SocketSlashCommand command)
     {
-        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == "name")?.Value.ToString()?.Trim();
+        string? monsterName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandMonsterParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(monsterName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `name`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandMonsterParameter}`.");
         }
 
         var monster = GetMonster(monsterName);
@@ -260,10 +260,10 @@ public partial class DiscordService
 
     private async Task ItemCommand(SocketSlashCommand command)
     {
-        string? itemName = command.Data.Options.FirstOrDefault(o => o.Name == "name")?.Value.ToString()?.Trim();
+        string? itemName = command.Data.Options.FirstOrDefault(o => o.Name == Constants.CommandItemParameter)?.Value.ToString()?.Trim();
         if (string.IsNullOrEmpty(itemName))
         {
-            throw new ControlException(ControlReason.CommandResponse, "Invalid `name`.");
+            throw new ControlException(ControlReason.CommandResponse, $"Invalid `{Constants.CommandItemParameter}`.");
         }
 
         var item = GetItem(itemName);
@@ -350,30 +350,30 @@ public partial class DiscordService
             new SlashCommandBuilder()
                 .WithName(Constants.CommandSimulate)
                 .WithDescription("Simulates a battle between a monster and a character with the specified items equipped.")
-                .AddOption("monster", ApplicationCommandOptionType.String, "The code or name of the monster.", isRequired: true)
-                .AddOption("items", ApplicationCommandOptionType.String, "The codes or names of the items equipped, separated by commas.", isRequired: true)
-                .AddOption("level", ApplicationCommandOptionType.Integer, "Player level (defaults to 40).", isRequired: false),
+                .AddOption(Constants.CommandMonsterParameter, ApplicationCommandOptionType.String, Constants.CommandMonsterParameterDescription, isRequired: true)
+                .AddOption(Constants.CommandItemsParameter, ApplicationCommandOptionType.String, "The codes or names of the items equipped, separated by commas.", isRequired: true)
+                .AddOption(Constants.CommandLevelParameter, ApplicationCommandOptionType.Integer, "Player level (defaults to 40).", isRequired: false),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandSimulateCharacter)
                 .WithDescription("Simulates a battle between a monster and a specific character.")
-                .AddOption("monster", ApplicationCommandOptionType.String, "The code of the monster.", isRequired: true)
-                .AddOption("name", ApplicationCommandOptionType.String, "The name of the character (case sensitive).", isRequired: true),
+                .AddOption(Constants.CommandMonsterParameter, ApplicationCommandOptionType.String, Constants.CommandMonsterParameterDescription, isRequired: true)
+                .AddOption(Constants.CommandNameParameter, ApplicationCommandOptionType.String, Constants.CommandNameParameterDescription, isRequired: true),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandCharacter)
                 .WithDescription("Displays a specific character's information.")
-                .AddOption("name", ApplicationCommandOptionType.String, "The name of the character (case sensitive).", isRequired: true),
+                .AddOption(Constants.CommandNameParameter, ApplicationCommandOptionType.String, Constants.CommandNameParameterDescription, isRequired: true),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandCharacterEquipment)
                 .WithDescription("Get the item codes of a character's equipped items, in the format expected by /simulate")
-                .AddOption("name", ApplicationCommandOptionType.String, "The name of the character (case sensitive).", isRequired: true),
+                .AddOption(Constants.CommandNameParameter, ApplicationCommandOptionType.String, Constants.CommandNameParameterDescription, isRequired: true),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandMonster)
                 .WithDescription("Displays a monster's information.")
-                .AddOption("name", ApplicationCommandOptionType.String, "The code or name of the monster.", isRequired: true),
+                .AddOption(Constants.CommandMonsterParameter, ApplicationCommandOptionType.String, Constants.CommandMonsterParameterDescription, isRequired: true),
             new SlashCommandBuilder()
                 .WithName(Constants.CommandItem)
                 .WithDescription("Displays an item's information.")
-                .AddOption("name", ApplicationCommandOptionType.String, "The code or name of the item.", isRequired: true)
+                .AddOption(Constants.CommandItemParameter, ApplicationCommandOptionType.String, "The code or name of the item.", isRequired: true)
         ];
 
         try
