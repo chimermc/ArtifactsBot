@@ -12,15 +12,15 @@ public partial class DiscordService
         // ReSharper disable StringLiteralTypo
         string skills =
             $"""
-                 Combat: {character.Level} ({Percentage(character.Xp, character.Max_xp)})
-                 Mining: {character.Mining_level} ({Percentage(character.Mining_xp, character.Mining_max_xp)})
-                 Woodcutting: {character.Woodcutting_level} ({Percentage(character.Woodcutting_xp, character.Woodcutting_max_xp)})
-                 Fishing: {character.Fishing_level} ({Percentage(character.Fishing_xp, character.Fishing_max_xp)})
-                 Weaponcrafting: {character.Weaponcrafting_level} ({Percentage(character.Weaponcrafting_xp, character.Weaponcrafting_max_xp)})
-                 Gearcrafting: {character.Gearcrafting_level} ({Percentage(character.Gearcrafting_xp, character.Gearcrafting_max_xp)})
-                 Jewelrycrafting: {character.Jewelrycrafting_level} ({Percentage(character.Jewelrycrafting_xp, character.Jewelrycrafting_max_xp)})
-                 Cooking: {character.Cooking_level} ({Percentage(character.Cooking_xp, character.Cooking_max_xp)})
-                 Alchemy: {character.Alchemy_level} ({Percentage(character.Alchemy_xp, character.Alchemy_max_xp)})
+                 Combat: {character.Level} ({Percentage(character.Xp, character.Max_xp)}%)
+                 Mining: {character.Mining_level} ({Percentage(character.Mining_xp, character.Mining_max_xp)}%)
+                 Woodcutting: {character.Woodcutting_level} ({Percentage(character.Woodcutting_xp, character.Woodcutting_max_xp)}%)
+                 Fishing: {character.Fishing_level} ({Percentage(character.Fishing_xp, character.Fishing_max_xp)}%)
+                 Weaponcrafting: {character.Weaponcrafting_level} ({Percentage(character.Weaponcrafting_xp, character.Weaponcrafting_max_xp)}%)
+                 Gearcrafting: {character.Gearcrafting_level} ({Percentage(character.Gearcrafting_xp, character.Gearcrafting_max_xp)}%)
+                 Jewelrycrafting: {character.Jewelrycrafting_level} ({Percentage(character.Jewelrycrafting_xp, character.Jewelrycrafting_max_xp)}%)
+                 Cooking: {character.Cooking_level} ({Percentage(character.Cooking_xp, character.Cooking_max_xp)}%)
+                 Alchemy: {character.Alchemy_level} ({Percentage(character.Alchemy_xp, character.Alchemy_max_xp)}%)
                  """;
         // ReSharper restore StringLiteralTypo
 
@@ -82,7 +82,7 @@ public partial class DiscordService
         var droppedByMonsters = _artifactsService.GetMonstersThatDropThisItem(item.Code);
         if (droppedByMonsters.Count > 0)
         {
-            builder.AddField("Dropped By", string.Join(Environment.NewLine, droppedByMonsters.Select(m => $"`{m.Code}` (1/{m.Drops.First(d => d.Code == item.Code).Rate})")));
+            builder.AddField("Dropped By", string.Join(Environment.NewLine, droppedByMonsters.Select(m => $"`{m.Code}` {GetDropRateNotation(m.Drops.First(d => d.Code == item.Code))}")));
         }
 
         return builder.Build();
@@ -110,7 +110,7 @@ public partial class DiscordService
             .AddField("Gold", $"{monster.Min_gold} - {monster.Max_gold}", true)
             .AddField("Attack", string.Join(Environment.NewLine, attacks).ToInvisibleEmbedIfEmpty(), true)
             .AddField("Resist", string.Join(Environment.NewLine, resistances).ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Drops", string.Join(Environment.NewLine, monster.Drops.Select(d => $"`{d.Code}` (1/{d.Rate})")).ToInvisibleEmbedIfEmpty(), true);
+            .AddField("Drops", string.Join(Environment.NewLine, monster.Drops.Select(d => $"`{d.Code}` {GetDropRateNotation(d)}")).ToInvisibleEmbedIfEmpty(), true);
 
         return builder.Build();
     }
@@ -129,7 +129,7 @@ public partial class DiscordService
 
         StringBuilder message = new(isDeterministic
             ? $"This fight is deterministic since neither fighter can block. The player {(wins > 0 ? "won" : "lost")} the fight."
-            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)} win rate).");
+            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)}% win rate).");
         message.AppendLine();
 
         const string rounding = "0.0";
@@ -162,7 +162,10 @@ public partial class DiscordService
         return builder.Build();
     }
 
-    private static string Percentage(int current, int max) => ((float)current / max).ToString("P1");
+    private static string GetDropRateNotation(DropRateSchema drop) =>
+        $"{1.0f / drop.Rate * 100:0.##}% ({drop.Min_quantity}{(drop.Min_quantity == drop.Max_quantity ? string.Empty : "-" + drop.Max_quantity)})";
+
+    private static string Percentage(int current, int max) => ((float)current / max * 100).ToString("0.#");
 
     private static string Pluralize(int count) => count == 1 ? string.Empty : "s";
 }
