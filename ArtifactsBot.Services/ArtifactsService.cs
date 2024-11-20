@@ -131,6 +131,7 @@ public partial class ArtifactsService
         var status = await GetStatus(cancellationToken);
         if (status.Version == _serverVersion) { return false; }
 
+        _logService.LogInfo($"Detected server version update from '{_serverVersion}' to '{status.Version}'.");
         _serverVersion = status.Version;
         var itemsTask = GetAllItems(cancellationToken);
         var monstersTask = GetAllMonsters(cancellationToken);
