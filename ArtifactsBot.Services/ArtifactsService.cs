@@ -126,6 +126,15 @@ public partial class ArtifactsService
 
     #endregion Data
 
+    public async Task ReloadGameData(CancellationToken cancellationToken = default)
+    {
+        var itemsTask = GetAllItems(cancellationToken);
+        var monstersTask = GetAllMonsters(cancellationToken);
+        await Task.WhenAll(itemsTask, monstersTask);
+        _items = itemsTask.Result;
+        _monsters = monstersTask.Result;
+    }
+
     public async Task<bool> CheckForServerUpdate(CancellationToken cancellationToken = default)
     {
         var status = await GetStatus(cancellationToken);
@@ -133,11 +142,7 @@ public partial class ArtifactsService
 
         _logService.LogInfo($"Detected server version update from '{_serverVersion}' to '{status.Version}'.");
         _serverVersion = status.Version;
-        var itemsTask = GetAllItems(cancellationToken);
-        var monstersTask = GetAllMonsters(cancellationToken);
-        await Task.WhenAll(itemsTask, monstersTask);
-        _items = itemsTask.Result;
-        _monsters = monstersTask.Result;
+        await ReloadGameData(cancellationToken);
         return true;
     }
 
