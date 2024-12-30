@@ -8,7 +8,7 @@ public partial class ArtifactsService
     {
         static (int RealDamage, int Resist) GetRealDamagePerHit(int attack, int defenderResist)
         {
-            return ((int)Math.Round(attack - attack * defenderResist * 0.01f), defenderResist);
+            return (Round(attack - attack * defenderResist * 0.01), defenderResist);
         }
 
         List<(int RealDamage, int Resist)> characterAttacks = new(4);
@@ -81,7 +81,12 @@ public partial class ArtifactsService
 
     private static bool IsAttackUnblocked(int resist) => resist <= 0 || resist <= Random.Shared.Next(0, 1000);
 
-    private static int GetMultipliedAttack(int attack, int damageMultiplier) => (int)Math.Round(attack + attack * damageMultiplier * 0.01);
+    private static int GetMultipliedAttack(int attack, int damageMultiplier) => Round(attack + attack * damageMultiplier * 0.01);
+
+    /// <summary>
+    /// Round to the nearest int. Values ending in .5 always round up. This is the rounding logic used by the game.
+    /// </summary>
+    public static int Round(double value) => (int)(value + 0.5);
 
     public static CharacterStats GetCharacterStats(IEnumerable<ItemSchema> characterEquipment, int characterLevel)
     {

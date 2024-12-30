@@ -29,10 +29,10 @@ public partial class DiscordService
         if (character.Utility2_slot_quantity > 0) { equipment.Add($"`{character.Utility2_slot}` x{character.Utility2_slot_quantity}"); }
 
         List<string> attacks = new(4);
-        if (character.Attack_fire > 0) { attacks.Add($"Fire: {(int)Math.Round(character.Attack_fire * (1 + character.Dmg_fire / 100.0f))}"); }
-        if (character.Attack_earth > 0) { attacks.Add($"Earth: {(int)Math.Round(character.Attack_earth * (1 + character.Dmg_earth / 100.0f))}"); }
-        if (character.Attack_water > 0) { attacks.Add($"Water: {(int)Math.Round(character.Attack_water * (1 + character.Dmg_water / 100.0f))}"); }
-        if (character.Attack_air > 0) { attacks.Add($"Air: {(int)Math.Round(character.Attack_air * (1 + character.Dmg_air / 100.0f))}"); }
+        if (character.Attack_fire > 0) { attacks.Add($"Fire: {ArtifactsService.Round(character.Attack_fire * (1 + character.Dmg_fire / 100.0))}"); }
+        if (character.Attack_earth > 0) { attacks.Add($"Earth: {ArtifactsService.Round(character.Attack_earth * (1 + character.Dmg_earth / 100.0))}"); }
+        if (character.Attack_water > 0) { attacks.Add($"Water: {ArtifactsService.Round(character.Attack_water * (1 + character.Dmg_water / 100.0))}"); }
+        if (character.Attack_air > 0) { attacks.Add($"Air: {ArtifactsService.Round(character.Attack_air * (1 + character.Dmg_air / 100.0))}"); }
 
         List<string> resistances = new(4);
         if (character.Res_fire != 0) { resistances.Add($"Fire: {character.Res_fire}%"); }
