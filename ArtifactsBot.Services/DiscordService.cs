@@ -29,7 +29,7 @@ public partial class DiscordService
 
 #if DEBUG
         // This shouldn't be called on every app startup. Only run manually, one time, when command signatures have changed.
-        //client.Ready += () => AddCommands(client);
+        //_client.Ready += () => AddCommands(_client);
 #endif
     }
 
@@ -351,6 +351,8 @@ public partial class DiscordService
         return Task.CompletedTask;
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
+
     /// <summary>
     /// Register commands that the bot supports.
     /// This does not need to be called every time the application starts; after calling it once, Discord will remember it.
@@ -399,6 +401,8 @@ public partial class DiscordService
             _logService.LogCritical(ex.ToString());
         }
     }
+
+#pragma warning restore IDE0051 // Remove unused private members
 
     [GeneratedRegex("""\[\[[a-z_\s&]{2,50}]]""", RegexOptions.IgnoreCase)]
     private static partial Regex MessageTag();

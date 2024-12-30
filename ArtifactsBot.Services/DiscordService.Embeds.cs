@@ -136,9 +136,15 @@ public partial class DiscordService
 
         if (wins > 0)
         {
-            var bestResult = results.Where(r => r.IsWin).MaxBy(r => r.RemainingHp);
-            message.AppendLine($"The win that took the least damage won in {bestResult.Turns} turn{Pluralize(bestResult.Turns)} and lost {characterStats.MaxHp - bestResult.RemainingHp} health.");
-            message.AppendLine($"On average, wins took {results.Where(r => r.IsWin).Average(r => r.Turns).ToString(rounding)} turns and lost {(characterStats.MaxHp - results.Where(r => r.IsWin).Average(r => r.RemainingHp)).ToString(rounding)} health.");
+            if (wins > 1)
+            {
+                var bestWin = results.Where(r => r.IsWin).MaxBy(r => r.RemainingHp);
+                var worstWin = results.Where(r => r.IsWin).MinBy(r => r.RemainingHp);
+                message.AppendLine($"Best Win: {bestWin.Turns} turn{Pluralize(bestWin.Turns)}, lost {characterStats.MaxHp - bestWin.RemainingHp} health.");
+                message.AppendLine($"Worst Win: {worstWin.Turns} turn{Pluralize(worstWin.Turns)}, lost {characterStats.MaxHp - worstWin.RemainingHp} health.");
+            }
+
+            message.AppendLine($"Average Win: {results.Where(r => r.IsWin).Average(r => r.Turns).ToString(rounding)} turns, lost {(characterStats.MaxHp - results.Where(r => r.IsWin).Average(r => r.RemainingHp)).ToString(rounding)} health.");
         }
 
         if (losses > 0)
@@ -146,11 +152,18 @@ public partial class DiscordService
             var completedLosses = results.Where(r => !r.IsWin && r.Turns < 100).ToList();
             if (completedLosses.Count > 0)
             {
-                var worstResult = completedLosses.MinBy(r => r.RemainingHp);
+                if (completedLosses.Count > 1)
+                {
+                    var bestLoss = completedLosses.MaxBy(r => r.RemainingHp);
+                    var worstLoss = completedLosses.MinBy(r => r.RemainingHp);
+                    message.AppendLine($"Best Loss: {bestLoss.Turns} turn{Pluralize(bestLoss.Turns)}{(bestLoss.WithHealingTurns < 100 ? $", would need {bestLoss.RemainingHp * -1 + 1} healing to win in {bestLoss.WithHealingTurns} turns" : string.Empty)}.");
+                    message.AppendLine($"Worst Loss: {worstLoss.Turns} turn{Pluralize(worstLoss.Turns)}{(worstLoss.WithHealingTurns < 100 ? $", would need {worstLoss.RemainingHp * -1 + 1} healing to win in {worstLoss.WithHealingTurns} turns" : string.Empty)}.");
+                }
+
                 double averageHealingTurns = completedLosses.Average(r => r.WithHealingTurns);
-                message.AppendLine($"On average, losses took {completedLosses.Average(r => r.Turns).ToString(rounding)} turns{(averageHealingTurns < 100 ? $" and would need {(completedLosses.Average(r => r.RemainingHp) * -1 + 1).ToString(rounding)} healing to win in {averageHealingTurns.ToString(rounding)} turns" : string.Empty)}.");
-                message.AppendLine($"The worst loss took {worstResult.Turns} turn{Pluralize(worstResult.Turns)}{(worstResult.WithHealingTurns < 100 ? $" and would need {worstResult.RemainingHp * -1 + 1} healing to win in {worstResult.WithHealingTurns} turns" : string.Empty)}.");
+                message.AppendLine($"Average Loss: {completedLosses.Average(r => r.Turns).ToString(rounding)} turns{(averageHealingTurns < 100 ? $" and would need {(completedLosses.Average(r => r.RemainingHp) * -1 + 1).ToString(rounding)} healing to win in {averageHealingTurns.ToString(rounding)} turns" : string.Empty)}.");
             }
+
             int incompleteLosses = losses - completedLosses.Count;
             if (incompleteLosses > 0)
             {
@@ -163,7 +176,7 @@ public partial class DiscordService
     }
 
     private static string GetDropRateNotation(DropRateSchema drop) =>
-        $"{1.0f / drop.Rate * 100:0.##}% ({drop.Min_quantity}{(drop.Min_quantity == drop.Max_quantity ? string.Empty : "-" + drop.Max_quantity)})";
+        $"{1.0f / drop.Rate * 100:0.##}%{(drop.Min_quantity == drop.Max_quantity ? string.Empty : $" ({drop.Min_quantity}-{drop.Max_quantity})")}";
 
     private static string Percentage(int current, int max) => ((float)current / max * 100).ToString("0.#");
 
