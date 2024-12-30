@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Frozen;
 using System.Runtime.CompilerServices;
 using static ArtifactsBot.Services.Enums;
 
@@ -8,8 +8,8 @@ public partial class ArtifactsService
 {
     private readonly AppInsightsLogService _logService;
     private readonly ArtifactsClient _client;
-    private ReadOnlyDictionary<string, ItemSchema> _items;
-    private ReadOnlyDictionary<string, MonsterSchema> _monsters;
+    private FrozenDictionary<string, ItemSchema> _items;
+    private FrozenDictionary<string, MonsterSchema> _monsters;
     private string _serverVersion;
 
     public ArtifactsService(AppInsightsLogService logService)
@@ -35,61 +35,47 @@ public partial class ArtifactsService
         return response.Data;
     }
 
-    private async Task<ReadOnlyDictionary<string, ItemSchema>> GetAllItems(CancellationToken cancellationToken = default)
+    private async Task<FrozenDictionary<string, ItemSchema>> GetAllItems(CancellationToken cancellationToken = default)
     {
         return await DoWithRetry(GetAllItemsSub, cancellationToken);
 
-        async Task<ReadOnlyDictionary<string, ItemSchema>> GetAllItemsSub()
+        async Task<FrozenDictionary<string, ItemSchema>> GetAllItemsSub()
         {
             const int resultsPerPage = 100;
             var response = await _client.Get_all_items_items_getAsync(null, null, null, null, null, null, 1, resultsPerPage, cancellationToken);
             int pages = response.Pages ?? 100;
-
-            Dictionary<string, ItemSchema> items = new(response.Total ?? 256);
-            foreach (var item in response.Data)
-            {
-                items[item.Code] = item;
-            }
+            List<ItemSchema> items = new(response.Total ?? 256);
+            items.AddRange(response.Data);
             for (int i = 2; i <= pages; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 response = await _client.Get_all_items_items_getAsync(null, null, null, null, null, null, i, resultsPerPage, cancellationToken);
-                foreach (var item in response.Data)
-                {
-                    items[item.Code] = item;
-                }
+                items.AddRange(response.Data);
             }
 
-            return items.AsReadOnly();
+            return items.Select(item => new KeyValuePair<string, ItemSchema>(item.Code, item)).ToFrozenDictionary();
         }
     }
 
-    private async Task<ReadOnlyDictionary<string, MonsterSchema>> GetAllMonsters(CancellationToken cancellationToken = default)
+    private async Task<FrozenDictionary<string, MonsterSchema>> GetAllMonsters(CancellationToken cancellationToken = default)
     {
         return await DoWithRetry(GetAllMonstersSub, cancellationToken);
 
-        async Task<ReadOnlyDictionary<string, MonsterSchema>> GetAllMonstersSub()
+        async Task<FrozenDictionary<string, MonsterSchema>> GetAllMonstersSub()
         {
             const int resultsPerPage = 100;
             var response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, 1, resultsPerPage, cancellationToken);
             int pages = response.Pages ?? 100;
-
-            Dictionary<string, MonsterSchema> monsters = new(response.Total ?? 256);
-            foreach (var monster in response.Data)
-            {
-                monsters[monster.Code] = monster;
-            }
+            List<MonsterSchema> monsters = new(response.Total ?? 256);
+            monsters.AddRange(response.Data);
             for (int i = 2; i <= pages; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, i, resultsPerPage, cancellationToken);
-                foreach (var item in response.Data)
-                {
-                    monsters[item.Code] = item;
-                }
+                monsters.AddRange(response.Data);
             }
 
-            return monsters.AsReadOnly();
+            return monsters.Select(m => new KeyValuePair<string, MonsterSchema>(m.Code, m)).ToFrozenDictionary();
         }
     }
 
