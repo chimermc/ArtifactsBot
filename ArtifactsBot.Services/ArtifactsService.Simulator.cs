@@ -39,11 +39,11 @@ public partial class ArtifactsService
                 if (turn % 2 == 0)
                 {
                     // monster turn
-                    foreach (var attack in monsterAttacks)
+                    foreach ((int realDamage, int resist) in monsterAttacks)
                     {
-                        if (IsAttackUnblocked(attack.Resist))
+                        if (IsAttackUnblocked(resist))
                         {
-                            characterHp -= attack.RealDamage;
+                            characterHp -= realDamage;
                         }
                     }
 
@@ -56,11 +56,11 @@ public partial class ArtifactsService
                 else
                 {
                     // character turn
-                    foreach (var attack in characterAttacks)
+                    foreach ((int realDamage, int resist) in characterAttacks)
                     {
-                        if (IsAttackUnblocked(attack.Resist))
+                        if (IsAttackUnblocked(resist))
                         {
-                            monsterHp -= attack.RealDamage;
+                            monsterHp -= realDamage;
                         }
                     }
 
@@ -79,13 +79,13 @@ public partial class ArtifactsService
         return (results, isDeterministic);
     }
 
-    private static bool IsAttackUnblocked(int resist) => resist == 0 || resist <= Random.Shared.Next(0, 1000);
+    private static bool IsAttackUnblocked(int resist) => resist <= 0 || resist <= Random.Shared.Next(0, 1000);
 
-    private static int GetMultipliedAttack(int attack, int damageMultiplier) => (int)Math.Round(attack + attack * damageMultiplier * 0.01f);
+    private static int GetMultipliedAttack(int attack, int damageMultiplier) => (int)Math.Round(attack + attack * damageMultiplier * 0.01);
 
     public static CharacterStats GetCharacterStats(IEnumerable<ItemSchema> characterEquipment, int characterLevel)
     {
-        int maxHp = Constants.CharacterBaseHp + (characterLevel - 1) * Constants.CharacterHpPerLevel,
+        int maxHp = Constants.CharacterBaseHp + characterLevel * Constants.CharacterHpPerLevel,
             fireAttack = 0, earthAttack = 0, waterAttack = 0, airAttack = 0,
             fireDamage = 0, earthDamage = 0, waterDamage = 0, airDamage = 0,
             fireResist = 0, earthResist = 0, waterResist = 0, airResist = 0;
@@ -97,6 +97,7 @@ public partial class ArtifactsService
                 switch (effect.Name)
                 {
                     case Constants.Hp:
+                    case Constants.HpBoost:
                         maxHp += effect.Value;
                         break;
                     case Constants.FireAttack:
@@ -112,27 +113,35 @@ public partial class ArtifactsService
                         airAttack += effect.Value;
                         break;
                     case Constants.FireDamage:
+                    case Constants.FireDamageBoost:
                         fireDamage += effect.Value;
                         break;
                     case Constants.EarthDamage:
+                    case Constants.EarthDamageBoost:
                         earthDamage += effect.Value;
                         break;
                     case Constants.WaterDamage:
+                    case Constants.WaterDamageBoost:
                         waterDamage += effect.Value;
                         break;
                     case Constants.AirDamage:
+                    case Constants.AirDamageBoost:
                         airDamage += effect.Value;
                         break;
                     case Constants.FireResist:
+                    case Constants.FireResistBoost:
                         fireResist += effect.Value;
                         break;
                     case Constants.EarthResist:
+                    case Constants.EarthResistBoost:
                         earthResist += effect.Value;
                         break;
                     case Constants.WaterResist:
+                    case Constants.WaterResistBoost:
                         waterResist += effect.Value;
                         break;
                     case Constants.AirResist:
+                    case Constants.AirResistBoost:
                         airResist += effect.Value;
                         break;
                 }
@@ -149,7 +158,7 @@ public partial class ArtifactsService
 
     public static List<string> GetCharacterEquipmentItemCodes(CharacterSchema character)
     {
-        List<string> equipment = new(12);
+        List<string> equipment = new(14);
         void AddIfExists(string slotItem)
         {
             if (!string.IsNullOrEmpty(slotItem)) { equipment.Add(slotItem); }
@@ -167,6 +176,8 @@ public partial class ArtifactsService
         AddIfExists(character.Artifact1_slot);
         AddIfExists(character.Artifact2_slot);
         AddIfExists(character.Artifact3_slot);
+        AddIfExists(character.Utility1_slot);
+        AddIfExists(character.Utility2_slot);
 
         return equipment;
     }

@@ -7,7 +7,7 @@ public class Constants
     public const int ServerUpdateCheckIntervalMilliseconds = 60000; // 1 minute
 
     public const int FightSimulatorIterations = 1000;
-    public const int CharacterBaseHp = 120;
+    public const int CharacterBaseHp = 115;
     public const int CharacterHpPerLevel = 5;
 
     /// <summary>

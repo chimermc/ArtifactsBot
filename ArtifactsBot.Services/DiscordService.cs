@@ -173,7 +173,7 @@ public partial class DiscordService
             }
             else if (itemSlot == ItemSlot.Ring1)
             {
-                if (items.Count(i => i.Type == item.Type) > 1)
+                if (items.Count(i => i.Type == item.Type) >= 2)
                 {
                     throw new ControlException(ControlReason.CommandResponse, "Cannot have more than two Ring items.");
                 }
@@ -182,13 +182,26 @@ public partial class DiscordService
             }
             else if (itemSlot == ItemSlot.Artifact1)
             {
-                if (items.Count(i => i.Type == item.Type) > 2)
+                if (items.Count(i => i.Type == item.Type) >= 3)
                 {
                     throw new ControlException(ControlReason.CommandResponse, "Cannot have more than three Artifact items.");
                 }
                 if (items.Any(i => i.Code == item.Code))
                 {
                     throw new ControlException(ControlReason.CommandResponse, $"Cannot have more than one {item.Code}; equipping duplicate artifacts is not allowed.");
+                }
+
+                items.Add(item);
+            }
+            else if (itemSlot == ItemSlot.Utility1)
+            {
+                if (items.Count(i => i.Type == item.Type) >= 2)
+                {
+                    throw new ControlException(ControlReason.CommandResponse, "Cannot have more than two Utility items.");
+                }
+                if (items.Any(i => i.Code == item.Code))
+                {
+                    throw new ControlException(ControlReason.CommandResponse, $"Cannot have more than one {item.Code}; equipping duplicate utilities is not allowed.");
                 }
 
                 items.Add(item);
