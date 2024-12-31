@@ -86,7 +86,7 @@ public partial class ArtifactsService
     /// <summary>
     /// Round to the nearest int. Values ending in .5 always round up. This is the rounding logic used by the game.
     /// </summary>
-    public static int Round(double value) => (int)(value + 0.5);
+    public static int Round(double value) => (int)Math.Floor(value + 0.5);
 
     public static CharacterStats GetCharacterStats(IEnumerable<ItemSchema> characterEquipment, int characterLevel)
     {
