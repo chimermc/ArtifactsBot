@@ -189,6 +189,7 @@ public partial class DiscordService
         }
 
         builder.AddField("Results", message);
+        builder.AddField("Note", "Rune effects, poison, and healing potions are not yet implemented in this simulator. It is otherwise up to date with Season 4.");
         return builder.Build();
     }
 
