@@ -43,7 +43,7 @@ public partial class ArtifactsService
                     {
                         if (IsAttackUnblocked(resist))
                         {
-                            characterHp -= realDamage;
+                            characterHp -= GetPossibleCriticalDamage(realDamage, monster.Critical_strike);
                         }
                     }
 
@@ -60,7 +60,7 @@ public partial class ArtifactsService
                     {
                         if (IsAttackUnblocked(resist))
                         {
-                            monsterHp -= realDamage;
+                            monsterHp -= GetPossibleCriticalDamage(realDamage, character.CriticalStrike);
                         }
                     }
 
@@ -81,7 +81,11 @@ public partial class ArtifactsService
 
     private static bool IsAttackUnblocked(int resist) => resist <= 0 || resist <= Random.Shared.Next(0, 1000);
 
+    private static bool IsAttackCritical(int criticalRate) => criticalRate > 0 && criticalRate > Random.Shared.Next(0, 100);
+
     private static int GetMultipliedAttack(int attack, int damageMultiplier) => Round(attack + attack * damageMultiplier * 0.01);
+
+    private static int GetPossibleCriticalDamage(int damage, int criticalRate) => IsAttackCritical(criticalRate) ? Round(damage * 1.5) : damage;
 
     /// <summary>
     /// Round to the nearest int. Values ending in .5 always round up. This is the rounding logic used by the game.
@@ -90,10 +94,11 @@ public partial class ArtifactsService
 
     public static CharacterStats GetCharacterStats(IEnumerable<ItemSchema> characterEquipment, int characterLevel)
     {
-        int maxHp = Constants.CharacterBaseHp + characterLevel * Constants.CharacterHpPerLevel,
+        int maxHp = characterLevel * Constants.CharacterHpPerLevel + Constants.CharacterBaseHp,
             fireAttack = 0, earthAttack = 0, waterAttack = 0, airAttack = 0,
             fireDamage = 0, earthDamage = 0, waterDamage = 0, airDamage = 0,
-            fireResist = 0, earthResist = 0, waterResist = 0, airResist = 0;
+            fireResist = 0, earthResist = 0, waterResist = 0, airResist = 0,
+            criticalStrike = 0;
 
         foreach (var item in characterEquipment)
         {
@@ -116,6 +121,12 @@ public partial class ArtifactsService
                         break;
                     case Constants.AirAttack:
                         airAttack += effect.Value;
+                        break;
+                    case Constants.Damage:
+                        fireDamage += effect.Value;
+                        earthDamage += effect.Value;
+                        waterDamage += effect.Value;
+                        airDamage += effect.Value;
                         break;
                     case Constants.FireDamage:
                     case Constants.FireDamageBoost:
@@ -149,6 +160,9 @@ public partial class ArtifactsService
                     case Constants.AirResistBoost:
                         airResist += effect.Value;
                         break;
+                    case Constants.CriticalStrike:
+                        criticalStrike += effect.Value;
+                        break;
                 }
             }
         }
@@ -158,7 +172,8 @@ public partial class ArtifactsService
             GetMultipliedAttack(earthAttack, earthDamage),
             GetMultipliedAttack(waterAttack, waterDamage),
             GetMultipliedAttack(airAttack, airDamage),
-            fireResist, earthResist, waterResist, airResist);
+            fireResist, earthResist, waterResist, airResist,
+            criticalStrike);
     }
 
     public static List<string> GetCharacterEquipmentItemCodes(CharacterSchema character)

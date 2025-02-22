@@ -36,7 +36,11 @@ public class Constants
 
     #region EffectCodes
 
+    // ReSharper disable IdentifierTypo
+    // ReSharper disable StringLiteralTypo
+
     public const string Alchemy = "alchemy";
+    public const string Antipoison = "antipoison";
     public const string AirAttack = "attack_air";
     public const string EarthAttack = "attack_earth";
     public const string FireAttack = "attack_fire";
@@ -50,6 +54,9 @@ public class Constants
     public const string EarthResistBoost = "boost_res_earth";
     public const string FireResistBoost = "boost_res_fire";
     public const string WaterResistBoost = "boost_res_water";
+    public const string Burn = "burn";
+    public const string CriticalStrike = "critical_strike";
+    public const string Damage = "dmg";
     public const string AirDamage = "dmg_air";
     public const string EarthDamage = "dmg_earth";
     public const string FireDamage = "dmg_fire";
@@ -57,20 +64,28 @@ public class Constants
     public const string Fishing = "fishing";
     public const string Gold = "gold";
     public const string Haste = "haste";
-    public const string Heal = "heal";
+    public const string Heal = "heal"; // Consumable heal
+    public const string Healing = "healing"; // Healing rune
     public const string Hp = "hp";
     public const string InventorySpace = "inventory_space";
+    public const string Lifesteal = "lifesteal";
     public const string Mining = "mining";
+    public const string Poison = "poison";
+    public const string Prospecting = "prospecting";
     public const string AirResist = "res_air";
     public const string EarthResist = "res_earth";
     public const string FireResist = "res_fire";
     public const string WaterResist = "res_water";
     public const string Restore = "restore";
+    public const string TeleportX = "teleport_x";
+    public const string TeleportY = "teleport_Y";
+    public const string Wisdom = "wisdom";
     public const string Woodcutting = "woodcutting";
 
     public static string GetEffectCodeDisplayName(string effectCode) => effectCode switch
     {
         Alchemy => "% Alchemy CD",
+        Antipoison => "Antipoison",
         AirAttack => "Air Attack",
         EarthAttack => "Earth Attack",
         FireAttack => "Fire Attack",
@@ -84,6 +99,9 @@ public class Constants
         EarthResistBoost => "% Earth Res Boost",
         FireResistBoost => "% Fire Res Boost",
         WaterResistBoost => "% Water Res Boost",
+        Burn => "% Burn",
+        CriticalStrike => "% Critical Strike",
+        Damage => "% Damage",
         AirDamage => "% Air Damage",
         EarthDamage => "% Earth Damage",
         FireDamage => "% Fire Damage",
@@ -92,17 +110,27 @@ public class Constants
         Gold => "Gold",
         Haste => "Haste",
         Heal => "HP Heal",
+        Healing => "% Healing",
         Hp => "Max HP",
         InventorySpace => "Inventory Space",
+        Lifesteal => "% Lifesteal",
         Mining => "% Mining CD",
+        Poison => "Poison",
+        Prospecting => "Prospecting",
         AirResist => "% Res Air",
         EarthResist => "% Res Earth",
         FireResist => "% Res Fire",
         WaterResist => "% Res Water",
         Restore => "HP Restore",
+        TeleportX => "(X) Teleport",
+        TeleportY => "(Y) Teleport",
+        Wisdom => "Wisdom",
         Woodcutting => "% Woodcutting CD",
         (_) => effectCode
     };
+
+    // ReSharper restore StringLiteralTypo
+    // ReSharper restore IdentifierTypo
 
     #endregion EffectCodes
 
