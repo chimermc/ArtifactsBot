@@ -99,7 +99,7 @@ public partial class ArtifactsService
         {
             foreach (var effect in item.Effects)
             {
-                switch (effect.Name)
+                switch (effect.Code)
                 {
                     case Constants.Hp:
                     case Constants.HpBoost:

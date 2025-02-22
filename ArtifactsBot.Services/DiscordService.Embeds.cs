@@ -64,7 +64,7 @@ public partial class DiscordService
 
         if (item.Effects.Count > 0)
         {
-            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{e.Value} {Constants.GetEffectCodeDisplayName(e.Name)}")), true);
+            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{e.Value} {Constants.GetEffectCodeDisplayName(e.Code)}")), true);
         }
 
         if (item.Craft != null)
