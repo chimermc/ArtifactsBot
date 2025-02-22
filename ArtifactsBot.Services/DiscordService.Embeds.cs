@@ -44,11 +44,11 @@ public partial class DiscordService
             .WithTitle(character.Name)
             .WithThumbnailUrl(Constants.GetCharacterImageUrl(character.Skin))
             .AddField("Skills", skills, true)
-            .AddField("Equipment", string.Join(Environment.NewLine, equipment).ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Inventory", string.Join(Environment.NewLine, character.Inventory.Where(s => s.Quantity > 0).Select(s => $"`{s.Code}` x{s.Quantity}")).ToInvisibleEmbedIfEmpty(), true)
+            .AddField("Equipment", BuildColumn(equipment), true)
+            .AddField("Inventory", BuildColumn(character.Inventory.Where(s => s.Quantity > 0).Select(s => $"`{s.Code}` x{s.Quantity}")), true)
             .AddField("Max HP", character.Max_hp, true)
-            .AddField("Attack", string.Join(Environment.NewLine, attacks).ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Resist", string.Join(Environment.NewLine, resistances).ToInvisibleEmbedIfEmpty(), true);
+            .AddField("Attack", BuildColumn(attacks), true)
+            .AddField("Resist", BuildColumn(resistances), true);
 
         return builder.Build();
     }
@@ -64,25 +64,25 @@ public partial class DiscordService
 
         if (item.Effects.Count > 0)
         {
-            builder.AddField("Effects", string.Join(Environment.NewLine, item.Effects.Select(e => $"{e.Value} {Constants.GetEffectCodeDisplayName(e.Code)}")), true);
+            builder.AddField("Effects", BuildColumn(item.Effects.Select(e => $"{e.Value} {Constants.GetEffectCodeDisplayName(e.Code)}")), true);
         }
 
         if (item.Craft != null)
         {
             builder.AddField("Craft Skill", $"{item.Craft.Skill} {item.Craft.Level}", true)
-                .AddField("Craft Recipe", string.Join(Environment.NewLine, item.Craft.Items.Select(i => $"`{i.Code}` x{i.Quantity}")).ToInvisibleEmbedIfEmpty(), true);
+                .AddField("Craft Recipe", BuildColumn(item.Craft.Items.Select(i => $"`{i.Code}` x{i.Quantity}")), true);
         }
 
         var usedToCraft = _artifactsService.GetItemsWithThisCraftIngredient(item.Code);
         if (usedToCraft.Count > 0)
         {
-            builder.AddField("Used to Craft", string.Join(Environment.NewLine, usedToCraft.Select(i => $"`{i.Code}`")));
+            builder.AddField("Used to Craft", BuildColumn(usedToCraft.Select(i => $"`{i.Code}`")));
         }
 
         var droppedByMonsters = _artifactsService.GetMonstersThatDropThisItem(item.Code);
         if (droppedByMonsters.Count > 0)
         {
-            builder.AddField("Dropped By", string.Join(Environment.NewLine, droppedByMonsters.Select(m => $"`{m.Code}` {GetDropRateNotation(m.Drops.First(d => d.Code == item.Code))}")));
+            builder.AddField("Dropped By", BuildColumn(droppedByMonsters.Select(m => $"`{m.Code}` {GetDropRateNotation(m.Drops.First(d => d.Code == item.Code))}")));
         }
 
         return builder.Build();
@@ -108,20 +108,37 @@ public partial class DiscordService
             .AddField("Level", monster.Level, true)
             .AddField("Max HP", monster.Hp, true)
             .AddField("Gold", $"{monster.Min_gold} - {monster.Max_gold}", true)
-            .AddField("Attack", string.Join(Environment.NewLine, attacks).ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Resist", string.Join(Environment.NewLine, resistances).ToInvisibleEmbedIfEmpty(), true)
-            .AddField("Drops", string.Join(Environment.NewLine, monster.Drops.Select(d => $"`{d.Code}` {GetDropRateNotation(d)}")).ToInvisibleEmbedIfEmpty(), true);
+            .AddField("Attack", BuildColumn(attacks), true)
+            .AddField("Resist", BuildColumn(resistances), true)
+            .AddField("Drops", BuildColumn(monster.Drops.Select(d => $"`{d.Code}` {GetDropRateNotation(d)}")), true);
 
         return builder.Build();
     }
 
     public Embed BuildSimulatorEmbed(CharacterStats characterStats, MonsterSchema monster, List<FightSimulatorResult> results, IEnumerable<string> items, bool isDeterministic, int characterLevel, string characterName = "Character")
     {
+        List<string> offense = new(5);
+        if (characterStats.FireAttack != 0) { offense.Add($"{characterStats.FireAttack} Fire Atk"); }
+        if (characterStats.EarthAttack != 0) { offense.Add($"{characterStats.EarthAttack} Earth Atk"); }
+        if (characterStats.WaterAttack != 0) { offense.Add($"{characterStats.WaterAttack} Water Atk"); }
+        if (characterStats.AirAttack != 0) { offense.Add($"{characterStats.AirAttack} Air Atk"); }
+        if (characterStats.CriticalStrike != 0) { offense.Add($"{characterStats.CriticalStrike}% Critical"); }
+
+        List<string> defense = new(5)
+        {
+            $"{characterStats.MaxHp} Max HP"
+        };
+        if (characterStats.FireResist != 0) { defense.Add($"{characterStats.FireResist}% Fire Res"); }
+        if (characterStats.EarthResist != 0) { defense.Add($"{characterStats.EarthResist}% Earth Res"); }
+        if (characterStats.WaterResist != 0) { defense.Add($"{characterStats.WaterResist}% Water Res"); }
+        if (characterStats.AirResist != 0) { defense.Add($"{characterStats.AirResist}% Air Res"); }
+
         var builder = new EmbedBuilder()
             .WithTitle($"Simulate: {characterName} vs {monster.Name}")
             .AddField("Equipment", $"`{string.Join(',', items)}`")
-            .AddField("Character Max HP", characterStats.MaxHp, true)
-            .AddField("Character Level", characterLevel, true);
+            .AddField("Character Level", characterLevel, true)
+            .AddField("Offense", BuildColumn(offense), true)
+            .AddField("Defense", BuildColumn(defense), true);
 
         int total = results.Count;
         int wins = results.Count(r => r.IsWin);
@@ -181,4 +198,6 @@ public partial class DiscordService
     private static string Percentage(int current, int max) => ((float)current / max * 100).ToString("0.#");
 
     private static string Pluralize(int count) => count == 1 ? string.Empty : "s";
+
+    private static string BuildColumn(IEnumerable<string> items) => string.Join(Environment.NewLine, items).ToInvisibleEmbedIfEmpty();
 }
