@@ -4,7 +4,7 @@ namespace ArtifactsBot.Services;
 
 public partial class ArtifactsService
 {
-    public static (List<FightSimulatorResult>, bool IsDeterministic) SimulateFight(CharacterStats character, MonsterSchema monster, int iterations)
+    public static List<FightSimulatorResult> SimulateFight(CharacterStats character, MonsterSchema monster, int iterations)
     {
         static (int RealDamage, int Resist) GetRealDamagePerHit(int attack, int defenderResist)
         {
@@ -23,9 +23,6 @@ public partial class ArtifactsService
         if (monster.Attack_water > 0) { monsterAttacks.Add(GetRealDamagePerHit(monster.Attack_water, character.WaterResist)); }
         if (monster.Attack_air > 0) { monsterAttacks.Add(GetRealDamagePerHit(monster.Attack_air, character.AirResist)); }
 
-        bool isDeterministic = characterAttacks.All(a => a.Resist == 0) && monsterAttacks.All(a => a.Resist == 0);
-        if (isDeterministic) { iterations = 1; }
-
         List<FightSimulatorResult> results = new(iterations);
         for (int i = 0; i < iterations; i++)
         {
@@ -41,10 +38,7 @@ public partial class ArtifactsService
                     // monster turn
                     foreach ((int realDamage, int resist) in monsterAttacks)
                     {
-                        if (IsAttackUnblocked(resist))
-                        {
-                            characterHp -= GetPossibleCriticalDamage(realDamage, monster.Critical_strike);
-                        }
+                        characterHp -= GetPossibleCriticalDamage(realDamage, monster.Critical_strike);
                     }
 
                     if (isWin == null && characterHp <= 0)
@@ -58,10 +52,7 @@ public partial class ArtifactsService
                     // character turn
                     foreach ((int realDamage, int resist) in characterAttacks)
                     {
-                        if (IsAttackUnblocked(resist))
-                        {
-                            monsterHp -= GetPossibleCriticalDamage(realDamage, character.CriticalStrike);
-                        }
+                        monsterHp -= GetPossibleCriticalDamage(realDamage, character.CriticalStrike);
                     }
 
                     if (monsterHp <= 0)
@@ -76,10 +67,8 @@ public partial class ArtifactsService
             results.Add(new FightSimulatorResult(isWin ?? false, isWin == true ? turn : lostOnTurn, turn, characterHp));
         }
 
-        return (results, isDeterministic);
+        return results;
     }
-
-    private static bool IsAttackUnblocked(int resist) => resist <= 0 || resist <= Random.Shared.Next(0, 1000);
 
     private static bool IsAttackCritical(int criticalRate) => criticalRate > 0 && criticalRate > Random.Shared.Next(0, 100);
 

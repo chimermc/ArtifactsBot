@@ -209,8 +209,8 @@ public partial class DiscordService
         }
 
         var stats = ArtifactsService.GetCharacterStats(items, level);
-        (var fightSimulatorResults, bool isDeterministic) = ArtifactsService.SimulateFight(stats, monster, Constants.FightSimulatorIterations);
-        await command.RespondAsync(embed: BuildSimulatorEmbed(stats, monster, fightSimulatorResults, items.Select(i => i.Code), isDeterministic, level));
+        var fightSimulatorResults = ArtifactsService.SimulateFight(stats, monster, Constants.FightSimulatorIterations);
+        await command.RespondAsync(embed: BuildSimulatorEmbed(stats, monster, fightSimulatorResults, items.Select(i => i.Code), level));
     }
 
     private async Task SimulateCharacterCommand(SocketSlashCommand command)
@@ -231,8 +231,8 @@ public partial class DiscordService
         var character = await GetCharacter(characterName);
         var itemCodes = ArtifactsService.GetCharacterEquipmentItemCodes(character);
         var stats = ArtifactsService.GetCharacterStats(itemCodes.Select(GetItem), character.Level);
-        (var fightSimulatorResults, bool isDeterministic) = ArtifactsService.SimulateFight(stats, monster, Constants.FightSimulatorIterations);
-        await command.RespondAsync(embed: BuildSimulatorEmbed(stats, monster, fightSimulatorResults, itemCodes, isDeterministic, character.Level, character.Name));
+        var fightSimulatorResults = ArtifactsService.SimulateFight(stats, monster, Constants.FightSimulatorIterations);
+        await command.RespondAsync(embed: BuildSimulatorEmbed(stats, monster, fightSimulatorResults, itemCodes, character.Level, character.Name));
     }
 
     private async Task CharacterCommand(SocketSlashCommand command)

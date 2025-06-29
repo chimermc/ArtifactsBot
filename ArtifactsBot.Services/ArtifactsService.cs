@@ -29,11 +29,7 @@ public partial class ArtifactsService
 
     #region Data
 
-    public async Task<StatusSchema> GetStatus(CancellationToken cancellationToken = default)
-    {
-        var response = await DoWithRetry(_client.Get_status__getAsync, cancellationToken);
-        return response.Data;
-    }
+    public async Task<StatusSchema> GetStatus(CancellationToken cancellationToken = default) => (await DoWithRetry(_client.Get_server_details__getAsync, cancellationToken)).Data;
 
     private async Task<FrozenDictionary<string, ItemSchema>> GetAllItems(CancellationToken cancellationToken = default)
     {
@@ -64,14 +60,14 @@ public partial class ArtifactsService
         async Task<FrozenDictionary<string, MonsterSchema>> GetAllMonstersSub()
         {
             const int resultsPerPage = 100;
-            var response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, 1, resultsPerPage, cancellationToken);
+            var response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, null, 1, resultsPerPage, cancellationToken);
             int pages = response.Pages ?? 100;
             List<MonsterSchema> monsters = new(response.Total ?? 256);
             monsters.AddRange(response.Data);
             for (int i = 2; i <= pages; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, i, resultsPerPage, cancellationToken);
+                response = await _client.Get_all_monsters_monsters_getAsync(null, null, null, null, i, resultsPerPage, cancellationToken);
                 monsters.AddRange(response.Data);
             }
 

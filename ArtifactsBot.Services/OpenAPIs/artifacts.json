@@ -3,9 +3,31 @@
   "info": {
     "title": "Artifacts API",
     "description": "\nArtifacts is an API-based MMO game where you can manage 5 characters to explore, fight, gather resources, craft items and much more.\n\nWebsite: https://artifactsmmo.com/\n\nDocumentation: https://docs.artifactsmmo.com/\n\nOpenAPI Spec: https://api.artifactsmmo.com/openapi.json\n",
-    "version": "4.0"
+    "version": "5.0"
   },
   "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Server details"
+        ],
+        "summary": "Get Server Details",
+        "description": "Return the status of the game server.",
+        "operationId": "get_server_details__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/my/bank": {
       "get": {
         "tags": [
@@ -306,7 +328,10 @@
             }
           },
           "458": {
-            "description": "Use a different password."
+            "description": "Please use a different password."
+          },
+          "459": {
+            "description": "The current password you entered is invalid."
           }
         },
         "security": [
@@ -368,16 +393,16 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "490": {
-            "description": "Character already at destination."
+            "description": "The character is already at the destination."
           },
           "404": {
             "description": "Map not found."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           }
         }
       }
@@ -424,10 +449,10 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           }
         }
       }
@@ -487,28 +512,28 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
           },
           "496": {
-            "description": "Character level is insufficient."
+            "description": "The character does not meet the required condition."
           },
           "491": {
-            "description": "Slot is not empty."
+            "description": "The equipment slot is not empty."
           },
           "485": {
             "description": "This item is already equipped."
           },
           "484": {
-            "description": "Character can't equip more than 100 utilitys in the same slot."
+            "description": "The character cannot equip more than 100 utilities in the same slot."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           }
         }
       }
@@ -552,7 +577,7 @@
         },
         "responses": {
           "200": {
-            "description": "The item has been successfully unequipped and added in his inventory.",
+            "description": "The item has been successfully unequipped and added in their inventory.",
             "content": {
               "application/json": {
                 "schema": {
@@ -568,22 +593,22 @@
             "description": "Character not found."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "491": {
-            "description": "Slot is empty."
+            "description": "The equipment slot is empty."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
           },
           "483": {
-            "description": "Character has no enough HP to unequip this item."
+            "description": "The character does not have enough HP to unequip this item."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           }
         }
       }
@@ -643,10 +668,10 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "476": {
             "description": "This item is not a consumable."
@@ -655,7 +680,7 @@
             "description": "Missing item or insufficient quantity."
           },
           "496": {
-            "description": "Character level is insufficient."
+            "description": "The character does not meet the required condition."
           }
         }
       }
@@ -702,16 +727,16 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "598": {
             "description": "Monster not found on this map."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           }
         }
       }
@@ -758,19 +783,19 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "598": {
             "description": "Resource not found on this map."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "493": {
-            "description": "Not skill level required."
+            "description": "The character's skill level is too low."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           }
         }
       }
@@ -833,16 +858,16 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "493": {
-            "description": "Not skill level required."
+            "description": "The character's skill level is too low."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -902,31 +927,31 @@
             "description": "Bank not found on this map."
           },
           "492": {
-            "description": "Insufficient gold on your character."
+            "description": "The character does not have enough gold."
           },
           "498": {
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "461": {
-            "description": "A transaction is already in progress with this item/your gold in your bank."
+            "description": "Some of your items or your gold in the bank are already part of an ongoing transaction."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           }
         }
       }
     },
-    "/my/{name}/action/bank/deposit": {
+    "/my/{name}/action/bank/deposit/item": {
       "post": {
         "tags": [
           "My characters"
         ],
-        "summary": "Action Deposit Bank",
-        "description": "Deposit an item in a bank on the character's map.",
-        "operationId": "action_deposit_bank_my__name__action_bank_deposit_post",
+        "summary": "Action Deposit Bank Item",
+        "description": "Deposit multiple items in a bank on the character's map.\nThe cooldown will be 3 seconds multiplied by the number of different items withdrawn.",
+        "operationId": "action_deposit_bank_item_my__name__action_bank_deposit_item_post",
         "security": [
           {
             "JWTBearer": []
@@ -951,14 +976,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SimpleItemSchema"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SimpleItemSchema"
+                },
+                "description": "List of items to deposit in the bank.",
+                "min_items": 1,
+                "max_items": 20,
+                "title": "Items"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Item successfully deposited in your bank.",
+            "description": "Items successfully deposited in your bank.",
             "content": {
               "application/json": {
                 "schema": {
@@ -974,16 +1006,16 @@
             "description": "Item not found."
           },
           "461": {
-            "description": "A transaction is already in progress with this item/your gold in your bank."
+            "description": "Some of your items or your gold in the bank are already part of an ongoing transaction."
           },
           "498": {
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -994,14 +1026,14 @@
         }
       }
     },
-    "/my/{name}/action/bank/withdraw": {
+    "/my/{name}/action/bank/withdraw/item": {
       "post": {
         "tags": [
           "My characters"
         ],
-        "summary": "Action Withdraw Bank",
-        "description": "Take an item from your bank and put it in the character's inventory.",
-        "operationId": "action_withdraw_bank_my__name__action_bank_withdraw_post",
+        "summary": "Action Withdraw Bank Item",
+        "description": "Take items from your bank and put them in the character's inventory.\nThe cooldown will be 3 seconds multiplied by the number of different items withdrawn.",
+        "operationId": "action_withdraw_bank_item_my__name__action_bank_withdraw_item_post",
         "security": [
           {
             "JWTBearer": []
@@ -1026,14 +1058,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SimpleItemSchema"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SimpleItemSchema"
+                },
+                "min_items": 1,
+                "max_items": 20,
+                "title": "Items"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Item successfully withdraw from your bank.",
+            "description": "Items successfully withdrawn from your bank.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1049,16 +1087,16 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "461": {
-            "description": "A transaction is already in progress with this item/your gold in your bank."
+            "description": "Some of your items or your gold in the bank are already part of an ongoing transaction."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "598": {
             "description": "Bank not found on this map."
@@ -1121,13 +1159,13 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "461": {
-            "description": "A transaction is already in progress with this item/your gold in your bank."
+            "description": "Some of your items or your gold in the bank are already part of an ongoing transaction."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Bank not found on this map."
@@ -1144,7 +1182,7 @@
           "My characters"
         ],
         "summary": "Action Buy Bank Expansion",
-        "description": "Buy a 20 slots bank expansion.",
+        "description": "Buy a 25 slots bank expansion.",
         "operationId": "action_buy_bank_expansion_my__name__action_bank_buy_expansion_post",
         "security": [
           {
@@ -1183,13 +1221,13 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "492": {
-            "description": "Insufficient gold on your character."
+            "description": "The character does not have enough gold."
           }
         }
       }
@@ -1233,7 +1271,7 @@
         },
         "responses": {
           "200": {
-            "description": "Item successfully buy from the NPC.",
+            "description": "Item successfully bought from the NPC.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1249,19 +1287,22 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "492": {
-            "description": "Insufficient gold on your character."
+            "description": "The character does not have enough gold."
           },
           "441": {
-            "description": "This item cannot be purchased."
+            "description": "This item is not available for purchase."
+          },
+          "478": {
+            "description": "Missing item or insufficient quantity."
           },
           "404": {
             "description": "Item not found."
@@ -1275,7 +1316,7 @@
           "My characters"
         ],
         "summary": "Action Npc Sell Item",
-        "description": "Sell an item from an NPC on the character's map.",
+        "description": "Sell an item to an NPC on the character's map.",
         "operationId": "action_npc_sell_item_my__name__action_npc_sell_post",
         "security": [
           {
@@ -1308,7 +1349,7 @@
         },
         "responses": {
           "200": {
-            "description": "Item successfully sell to the NPC.",
+            "description": "Item successfully sold to the NPC.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1324,13 +1365,13 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -1402,16 +1443,16 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "493": {
-            "description": "Not skill level required."
+            "description": "The character's skill level is too low."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -1477,25 +1518,25 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "436": {
-            "description": "A transaction is already in progress on this order by a another character."
+            "description": "A transaction is already in progress for this order by another character."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "492": {
-            "description": "Insufficient gold on your character."
+            "description": "The character does not have enough gold."
           },
           "434": {
-            "description": "This offer does not contain as many items."
+            "description": "This offer does not contain that many items."
           },
           "435": {
-            "description": "You can't buy to yourself."
+            "description": "You cannot trade with yourself."
           },
           "404": {
             "description": "Order not found."
@@ -1509,7 +1550,7 @@
           "My characters"
         ],
         "summary": "Action Ge Create Sell Order",
-        "description": "Create a sell order at the Grand Exchange on the character's map. Please note that a 5% sales tax is charged.",
+        "description": "Create a sell order at the Grand Exchange on the character's map. Please note there is a 3% listing tax, charged at the time of posting, on the total price.",
         "operationId": "action_ge_create_sell_order_my__name__action_grandexchange_sell_post",
         "security": [
           {
@@ -1555,10 +1596,10 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "404": {
             "description": "Item not found."
@@ -1567,10 +1608,10 @@
             "description": "Missing item or insufficient quantity."
           },
           "492": {
-            "description": "Insufficient gold on your character."
+            "description": "The character does not have enough gold."
           },
           "433": {
-            "description": "You can't create more than 100 orders at the same time."
+            "description": "You cannot create more than 100 orders at the same time."
           },
           "437": {
             "description": "This item cannot be sold."
@@ -1636,19 +1677,19 @@
             "description": "Character not found."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "436": {
-            "description": "A transaction is already in progress on this order by a another character."
+            "description": "A transaction is already in progress for this order by another character."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "438": {
-            "description": "You can't cancel an order that is not yours."
+            "description": "You cannot cancel an order that is not yours."
           },
           "404": {
             "description": "Order not found."
@@ -1698,22 +1739,22 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Tasks Master not found on this map."
           },
           "488": {
-            "description": "Character has not completed the task."
+            "description": "The character has not completed the task."
           },
           "487": {
-            "description": "Character has no task."
+            "description": "The character has no task assigned."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           }
         }
       }
@@ -1760,10 +1801,10 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Tasks Master not found on this map."
@@ -1772,7 +1813,7 @@
             "description": "Missing item or insufficient quantity."
           },
           "497": {
-            "description": "Character inventory is full."
+            "description": "The character's inventory is full."
           }
         }
       }
@@ -1819,16 +1860,16 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Tasks Master not found on this map."
           },
           "489": {
-            "description": "Character already has a task."
+            "description": "The character already has an assigned task."
           }
         }
       }
@@ -1885,19 +1926,19 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Tasks Master not found on this map."
           },
           "475": {
-            "description": "Character have already completed the task or are trying to trade too many items."
+            "description": "Task already completed or too many items submitted."
           },
           "474": {
-            "description": "Character does not have this task."
+            "description": "The character does not have this task."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -1947,13 +1988,145 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "598": {
             "description": "Tasks Master not found on this map."
+          },
+          "478": {
+            "description": "Missing item or insufficient quantity."
+          }
+        }
+      }
+    },
+    "/my/{name}/action/give/gold": {
+      "post": {
+        "tags": [
+          "My characters"
+        ],
+        "summary": "Action Give Gold",
+        "description": "Give gold to another character in your account on the same map.",
+        "operationId": "action_give_gold_my__name__action_give_gold_post",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Character name",
+              "description": "Name of your character."
+            },
+            "description": "Name of your character."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiveGoldSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Gold given successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GiveGoldReponseSchema"
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Character not found."
+          },
+          "499": {
+            "description": "The character is in cooldown."
+          },
+          "492": {
+            "description": "The character does not have enough gold."
+          },
+          "486": {
+            "description": "An action is already in progress for this character."
+          }
+        }
+      }
+    },
+    "/my/{name}/action/give/item": {
+      "post": {
+        "tags": [
+          "My characters"
+        ],
+        "summary": "Action Give Items",
+        "description": "Give items to another character in your account on the same map.\nThe cooldown will be 3 seconds multiplied by the number of different items given.",
+        "operationId": "action_give_items_my__name__action_give_item_post",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Character name",
+              "description": "Name of your character."
+            },
+            "description": "Name of your character."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiveItemsSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Items given successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GiveItemReponseSchema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item not found."
+          },
+          "498": {
+            "description": "Character not found."
+          },
+          "499": {
+            "description": "The character is in cooldown."
+          },
+          "497": {
+            "description": "The character's inventory is full."
+          },
+          "486": {
+            "description": "An action is already in progress for this character."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
@@ -2013,13 +2186,73 @@
             "description": "Character not found."
           },
           "499": {
-            "description": "Character in cooldown."
+            "description": "The character is in cooldown."
           },
           "486": {
-            "description": "An action is already in progress by your character."
+            "description": "An action is already in progress for this character."
           },
           "478": {
             "description": "Missing item or insufficient quantity."
+          }
+        }
+      }
+    },
+    "/my/{name}/action/change_skin": {
+      "post": {
+        "tags": [
+          "My characters"
+        ],
+        "summary": "Action Change Skin",
+        "description": "Change the skin of your character.",
+        "operationId": "action_change_skin_my__name__action_change_skin_post",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Character name",
+              "description": "Name of your character."
+            },
+            "description": "Name of your character."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeSkinCharacterSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Skin successfully changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeSkinResponseSchema"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "The character is in cooldown."
+          },
+          "486": {
+            "description": "An action is already in progress for this character."
+          },
+          "550": {
+            "description": "You cannot choose this skin because you do not own it."
           }
         }
       }
@@ -2030,7 +2263,7 @@
           "My characters"
         ],
         "summary": "Get All Characters Logs",
-        "description": "History of the last 100 actions of all your characters.",
+        "description": "History of the last 250 actions of all your characters.",
         "operationId": "get_all_characters_logs_my_logs_get",
         "security": [
           {
@@ -2038,6 +2271,77 @@
           }
         ],
         "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Page number",
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size",
+              "default": 50,
+              "title": "Size"
+            },
+            "description": "Page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched logs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPage_LogSchema_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Logs not found."
+          }
+        }
+      }
+    },
+    "/my/logs/{name}": {
+      "get": {
+        "tags": [
+          "My characters"
+        ],
+        "summary": "Get Character Logs",
+        "description": "History of the last actions of your character.",
+        "operationId": "get_character_logs_my_logs__name__get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Character name",
+              "description": "Name of your character."
+            },
+            "description": "Name of your character."
+          },
           {
             "name": "page",
             "in": "query",
@@ -2092,7 +2396,7 @@
           "My characters"
         ],
         "summary": "Get My Characters",
-        "description": "List of your characters.",
+        "description": "List of your characters. This endpoint is deprecated and will be removed in a future version. Please use accounts/{account}/characters.",
         "operationId": "get_my_characters_my_characters_get",
         "responses": {
           "200": {
@@ -2142,10 +2446,83 @@
             }
           },
           "456": {
-            "description": "Username already used."
+            "description": "This username is already taken."
           },
           "457": {
-            "description": "Email already used."
+            "description": "This email is already in use."
+          }
+        }
+      }
+    },
+    "/accounts/forgot_password": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Forgot Password",
+        "description": "Request a password reset.",
+        "operationId": "forgot_password_accounts_forgot_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "If this email address is associated with an account, a reset link has been sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordResetResponseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/reset_password": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Reset Password",
+        "description": "Reset password with a token. Use /forgot_password to get a token by email.",
+        "operationId": "reset_password_accounts_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetConfirmSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Password has been successfully reset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordResetResponseSchema"
+                }
+              }
+            }
+          },
+          "561": {
+            "description": "The password reset token has expired."
+          },
+          "562": {
+            "description": "This password reset token has already been used."
+          },
+          "560": {
+            "description": "The password reset token is invalid."
           }
         }
       }
@@ -2238,6 +2615,42 @@
           },
           "404": {
             "description": "Account not found."
+          }
+        }
+      }
+    },
+    "/accounts/{account}/characters": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get Account Characters",
+        "description": "Account character lists.",
+        "operationId": "get_account_characters_accounts__account__characters_get",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Account name",
+              "description": "The character name."
+            },
+            "description": "The character name."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched characters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharactersListSchema"
+                }
+              }
+            }
           }
         }
       }
@@ -2506,10 +2919,13 @@
             }
           },
           "494": {
-            "description": "Name already used."
+            "description": "This name is already in use."
           },
           "495": {
-            "description": "Maximum characters reached on your account."
+            "description": "You have reached the maximum number of characters on your account."
+          },
+          "550": {
+            "description": "You cannot choose this skin because you do not own it."
           }
         },
         "security": [
@@ -2748,6 +3164,21 @@
         "description": "Fetch events details.",
         "operationId": "get_all_events_events_get",
         "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/MapContentType_a-zA-Z0-9_-_____"
+                }
+              ],
+              "title": "Type",
+              "description": "Type of event."
+            },
+            "description": "Type of event."
+          },
           {
             "name": "page",
             "in": "query",
@@ -3004,6 +3435,18 @@
         "operationId": "get_all_items_items_get",
         "parameters": [
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*\\s?$",
+              "title": "Item name",
+              "description": "Name of the item."
+            },
+            "description": "Name of the item."
+          },
+          {
             "name": "min_level",
             "in": "query",
             "required": false,
@@ -3026,18 +3469,6 @@
               "description": "Maximum level items."
             },
             "description": "Maximum level items."
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_-]+$",
-              "title": "Item name",
-              "description": "Name of the item."
-            },
-            "description": "Name of the item."
           },
           {
             "name": "type",
@@ -3187,6 +3618,18 @@
             "description": "Default sort by combat total XP."
           },
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*\\s?$",
+              "title": "Character name",
+              "description": "Find a character by name."
+            },
+            "description": "Find a character by name."
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,
@@ -3251,6 +3694,18 @@
               "description": "Default sort by achievements points."
             },
             "description": "Default sort by achievements points."
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*\\s?$",
+              "title": "Account name",
+              "description": "Find a account by name."
+            },
+            "description": "Find a account by name."
           },
           {
             "name": "page",
@@ -3431,6 +3886,18 @@
         "operationId": "get_all_monsters_monsters_get",
         "parameters": [
           {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*\\s?$",
+              "title": "Monster name",
+              "description": "Name of the monster."
+            },
+            "description": "Name of the monster."
+          },
+          {
             "name": "min_level",
             "in": "query",
             "required": false,
@@ -3547,15 +4014,27 @@
         }
       }
     },
-    "/npcs": {
+    "/npcs/details": {
       "get": {
         "tags": [
           "NPCs"
         ],
         "summary": "Get All Npcs",
         "description": "Fetch NPCs details.",
-        "operationId": "get_all_npcs_npcs_get",
+        "operationId": "get_all_npcs_npcs_details_get",
         "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*\\s?$",
+              "title": "NPC name",
+              "description": "Name of the npc."
+            },
+            "description": "Name of the npc."
+          },
           {
             "name": "type",
             "in": "query",
@@ -3613,14 +4092,14 @@
         }
       }
     },
-    "/npcs/{code}": {
+    "/npcs/details/{code}": {
       "get": {
         "tags": [
           "NPCs"
         ],
         "summary": "Get Npc",
         "description": "Retrieve the details of a NPC.",
-        "operationId": "get_npc_npcs__code__get",
+        "operationId": "get_npc_npcs_details__code__get",
         "parameters": [
           {
             "name": "code",
@@ -3652,14 +4131,14 @@
         }
       }
     },
-    "/npcs/{code}/items": {
+    "/npcs/items/{code}": {
       "get": {
         "tags": [
           "NPCs"
         ],
         "summary": "Get Npc Items",
-        "description": "Retrieve the items list of a NPC. If the NPC has items to buy or sell, they will be displayed.",
-        "operationId": "get_npc_items_npcs__code__items_get",
+        "description": "Retrieve the items list of a NPC. If the NPC has items to buy, sell or trade, they will be displayed.",
+        "operationId": "get_npc_items_npcs_items__code__get",
         "parameters": [
           {
             "name": "code",
@@ -3703,7 +4182,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully fetched NPC.",
+            "description": "Successfully fetched NPC Items.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3714,6 +4193,93 @@
           },
           "404": {
             "description": "NPC not found."
+          }
+        }
+      }
+    },
+    "/npcs/items": {
+      "get": {
+        "tags": [
+          "NPCs"
+        ],
+        "summary": "Get All Npcs Items",
+        "description": "Retrieve the list of all NPC items.",
+        "operationId": "get_all_npcs_items_npcs_items_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Item code",
+              "description": "The code of the item."
+            },
+            "description": "The code of the item."
+          },
+          {
+            "name": "npc",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "NPC code",
+              "description": "The code of the npc."
+            },
+            "description": "The code of the npc."
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "title": "Currency code",
+              "description": "The code of the currency."
+            },
+            "description": "The code of the currency."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Page number",
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Page size",
+              "default": 50,
+              "title": "Size"
+            },
+            "description": "Page size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched NPC Items.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPage_NPCItem_"
+                }
+              }
+            }
           }
         }
       }
@@ -4114,7 +4680,7 @@
             }
           },
           "455": {
-            "description": "Token generation failed."
+            "description": "Failed to generate token."
           }
         },
         "security": [
@@ -4122,25 +4688,6 @@
             "HTTPBasic": []
           }
         ]
-      }
-    },
-    "/": {
-      "get": {
-        "summary": "Get Status",
-        "description": "Return the status of the game server.",
-        "operationId": "get_status__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusResponseSchema"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },
@@ -4243,10 +4790,10 @@
             "title": "Username",
             "description": "Username."
           },
-          "subscribed": {
+          "member": {
             "type": "boolean",
-            "title": "Subscribed",
-            "description": "Subscribed for the current season."
+            "title": "Member",
+            "description": "Member status."
           },
           "status": {
             "allOf": [
@@ -4254,13 +4801,19 @@
                 "$ref": "#/components/schemas/AccountStatus"
               }
             ],
-            "description": "Member status."
+            "description": "Account status."
           },
           "badges": {
             "items": {},
             "type": "array",
             "title": "Badges",
             "description": "Account badges."
+          },
+          "skins": {
+            "items": {},
+            "type": "array",
+            "title": "Skins",
+            "description": "Skins owned."
           },
           "achievements_points": {
             "type": "integer",
@@ -4281,8 +4834,9 @@
         "type": "object",
         "required": [
           "username",
-          "subscribed",
+          "member",
           "status",
+          "skins",
           "achievements_points",
           "banned"
         ],
@@ -4494,8 +5048,8 @@
           "sell_npc",
           "cancel_ge",
           "delete_item",
-          "deposit",
-          "withdraw",
+          "deposit_item",
+          "withdraw_item",
           "deposit_gold",
           "withdraw_gold",
           "equip",
@@ -4505,7 +5059,11 @@
           "recycling",
           "rest",
           "use",
-          "buy_bank_expansion"
+          "buy_bank_expansion",
+          "give_item",
+          "give_gold",
+          "change_skin",
+          "rename"
         ],
         "title": "ActionType"
       },
@@ -4529,9 +5087,12 @@
             ],
             "description": "Map of the event."
           },
-          "previous_skin": {
-            "type": "string",
-            "title": "Previous Skin",
+          "previous_map": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MapSchema"
+              }
+            ],
             "description": "Previous map skin."
           },
           "duration": {
@@ -4557,7 +5118,7 @@
           "name",
           "code",
           "map",
-          "previous_skin",
+          "previous_map",
           "duration",
           "expiration",
           "created_at"
@@ -4586,13 +5147,15 @@
           "email": {
             "type": "string",
             "format": "email",
-            "title": "Email"
+            "title": "Email",
+            "description": "Your email."
           }
         },
         "type": "object",
         "required": [
           "username",
-          "password"
+          "password",
+          "email"
         ],
         "title": "AddAccountSchema",
         "additionalProperties": false
@@ -4613,7 +5176,7 @@
                 "$ref": "#/components/schemas/CharacterSkin"
               }
             ],
-            "description": "Your desired skin."
+            "description": "Your desired skin. Skins unlocked by default: 'men1', 'men2', 'men3', 'women1', 'women2', 'women3'."
           }
         },
         "type": "object",
@@ -4865,13 +5428,13 @@
             ],
             "description": "Cooldown details."
           },
-          "item": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ItemSchema"
-              }
-            ],
-            "description": "Item details."
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SimpleItemSchema"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "Items details."
           },
           "bank": {
             "items": {
@@ -4893,7 +5456,7 @@
         "type": "object",
         "required": [
           "cooldown",
-          "item",
+          "items",
           "bank",
           "character"
         ],
@@ -4950,45 +5513,6 @@
         "title": "BankSchema",
         "additionalProperties": false
       },
-      "BlockedHitsSchema": {
-        "properties": {
-          "fire": {
-            "type": "integer",
-            "title": "Fire",
-            "description": "The amount of fire hits blocked."
-          },
-          "earth": {
-            "type": "integer",
-            "title": "Earth",
-            "description": "The amount of earth hits blocked."
-          },
-          "water": {
-            "type": "integer",
-            "title": "Water",
-            "description": "The amount of water hits blocked."
-          },
-          "air": {
-            "type": "integer",
-            "title": "Air",
-            "description": "The amount of air hits blocked."
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "The amount of total hits blocked."
-          }
-        },
-        "type": "object",
-        "required": [
-          "fire",
-          "earth",
-          "water",
-          "air",
-          "total"
-        ],
-        "title": "BlockedHitsSchema",
-        "additionalProperties": false
-      },
       "ChangePassword": {
         "properties": {
           "current_password": {
@@ -5014,6 +5538,70 @@
           "new_password"
         ],
         "title": "ChangePassword",
+        "additionalProperties": false
+      },
+      "ChangeSkinCharacterDataSchema": {
+        "properties": {
+          "cooldown": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CooldownSchema"
+              }
+            ],
+            "description": "Cooldown details."
+          },
+          "skin": {
+            "type": "string",
+            "title": "Skin",
+            "description": "Craft details."
+          },
+          "character": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSchema"
+              }
+            ],
+            "description": "Player details."
+          }
+        },
+        "type": "object",
+        "required": [
+          "cooldown",
+          "skin",
+          "character"
+        ],
+        "title": "ChangeSkinCharacterDataSchema",
+        "additionalProperties": false
+      },
+      "ChangeSkinCharacterSchema": {
+        "properties": {
+          "skin": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSkin"
+              }
+            ],
+            "description": "Your desired skin. Skins unlocked by default: 'men1', 'men2', 'men3', 'women1', 'women2', 'women3'."
+          }
+        },
+        "type": "object",
+        "required": [
+          "skin"
+        ],
+        "title": "ChangeSkinCharacterSchema",
+        "additionalProperties": false
+      },
+      "ChangeSkinResponseSchema": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ChangeSkinCharacterDataSchema"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ChangeSkinResponseSchema",
         "additionalProperties": false
       },
       "CharacterFightDataSchema": {
@@ -5081,6 +5669,14 @@
             "type": "string",
             "title": "Account",
             "description": "Account name."
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountStatus"
+              }
+            ],
+            "description": "Member status."
           },
           "skin": {
             "type": "string",
@@ -5188,6 +5784,7 @@
           "position",
           "name",
           "account",
+          "status",
           "skin",
           "level",
           "total_xp",
@@ -5526,12 +6123,12 @@
           "wisdom": {
             "type": "integer",
             "title": "Wisdom",
-            "description": "Wisdom increases the amount of XP gained from fights (1% extra per 10 wisdom)."
+            "description": "Wisdom increases the amount of XP gained from fights and skills (1% extra per 10 wisdom)."
           },
           "prospecting": {
             "type": "integer",
             "title": "Prospecting",
-            "description": "Prospecting increases the chances of getting better loot (1% extra per 10 PP)."
+            "description": "Prospecting increases the chances of getting drops from fights and skills (1% extra per 10 PP)."
           },
           "attack_fire": {
             "type": "integer",
@@ -5830,9 +6427,69 @@
           "men3",
           "women1",
           "women2",
-          "women3"
+          "women3",
+          "corrupted1",
+          "zombie1"
         ],
         "title": "CharacterSkin"
+      },
+      "CharactersListSchema": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterSchema"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of your characters."
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "CharactersListSchema",
+        "additionalProperties": false
+      },
+      "ConditionOperator": {
+        "type": "string",
+        "enum": [
+          "eq",
+          "ne",
+          "gt",
+          "lt"
+        ],
+        "title": "ConditionOperator"
+      },
+      "ConditionSchema": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Condition code."
+          },
+          "operator": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConditionOperator"
+              }
+            ],
+            "description": "Condition operator."
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value",
+            "description": "Condition value."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "operator",
+          "value"
+        ],
+        "title": "ConditionSchema",
+        "additionalProperties": false
       },
       "CooldownSchema": {
         "properties": {
@@ -7491,7 +8148,7 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "Name of the monster."
+            "description": "Name of the effect."
           },
           "code": {
             "type": "string",
@@ -7551,8 +8208,7 @@
         "enum": [
           "equipment",
           "consumable",
-          "combat",
-          "item"
+          "combat"
         ],
         "title": "EffectType"
       },
@@ -7622,7 +8278,7 @@
             "maximum": 100.0,
             "minimum": 1.0,
             "title": "Quantity",
-            "description": "Item quantity. Applicable to utilitys only.",
+            "description": "Item quantity. Applicable to utilities only.",
             "default": 1
           }
         },
@@ -7650,8 +8306,11 @@
       "EventContentSchema": {
         "properties": {
           "type": {
-            "type": "string",
-            "title": "Type",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MapContentType"
+              }
+            ],
             "description": "Type of the event."
           },
           "code": {
@@ -7679,12 +8338,18 @@
             "type": "integer",
             "title": "Y",
             "description": "Position Y of the map."
+          },
+          "skin": {
+            "type": "string",
+            "title": "Skin",
+            "description": "Map skin of the map"
           }
         },
         "type": "object",
         "required": [
           "x",
-          "y"
+          "y",
+          "skin"
         ],
         "title": "EventMapSchema",
         "additionalProperties": false
@@ -7701,6 +8366,14 @@
             "title": "Code",
             "description": "Code of the event."
           },
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EventContentSchema"
+              }
+            ],
+            "description": "Content of the event."
+          },
           "maps": {
             "items": {
               "$ref": "#/components/schemas/EventMapSchema"
@@ -7708,11 +8381,6 @@
             "type": "array",
             "title": "Maps",
             "description": "Map list of the event."
-          },
-          "skin": {
-            "type": "string",
-            "title": "Skin",
-            "description": "Map skin of the event."
           },
           "duration": {
             "type": "integer",
@@ -7723,25 +8391,16 @@
             "type": "integer",
             "title": "Rate",
             "description": "Rate spawn of the event. (1/rate every minute)"
-          },
-          "content": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventContentSchema"
-              }
-            ],
-            "description": "Content of the event."
           }
         },
         "type": "object",
         "required": [
           "name",
           "code",
+          "content",
           "maps",
-          "skin",
           "duration",
-          "rate",
-          "content"
+          "rate"
         ],
         "title": "EventSchema",
         "additionalProperties": false
@@ -7759,12 +8418,12 @@
           "xp": {
             "type": "integer",
             "title": "Xp",
-            "description": "The amount of xp gained by the fight."
+            "description": "The amount of xp gained from the fight."
           },
           "gold": {
             "type": "integer",
             "title": "Gold",
-            "description": "The amount of gold gained by the fight."
+            "description": "The amount of gold gained from the fight."
           },
           "drops": {
             "items": {
@@ -7772,28 +8431,12 @@
             },
             "type": "array",
             "title": "Drops",
-            "description": "The items dropped by the fight."
+            "description": "The items dropped from the fight."
           },
           "turns": {
             "type": "integer",
             "title": "Turns",
             "description": "Numbers of the turns of the combat."
-          },
-          "monster_blocked_hits": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BlockedHitsSchema"
-              }
-            ],
-            "description": "The amount of blocked hits by the monster."
-          },
-          "player_blocked_hits": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BlockedHitsSchema"
-              }
-            ],
-            "description": "The amount of blocked hits by the player."
           },
           "logs": {
             "items": {
@@ -7818,8 +8461,6 @@
           "gold",
           "drops",
           "turns",
-          "monster_blocked_hits",
-          "player_blocked_hits",
           "logs",
           "result"
         ],
@@ -7919,7 +8560,7 @@
             "type": "integer",
             "minimum": 1.0,
             "title": "Tax",
-            "description": "Order creation tax (3%, minimum 1)"
+            "description": "Listing tax (3%, minimum 1)"
           }
         },
         "type": "object",
@@ -8221,6 +8862,171 @@
         "title": "GeOrderHistorySchema",
         "additionalProperties": false
       },
+      "GiveGoldDataSchema": {
+        "properties": {
+          "cooldown": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CooldownSchema"
+              }
+            ],
+            "description": "Cooldown details."
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Quantity",
+            "description": "Quantity of gold given."
+          },
+          "receiver_character": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSchema"
+              }
+            ],
+            "description": "Character details of the receiving character."
+          },
+          "character": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSchema"
+              }
+            ],
+            "description": "Character details."
+          }
+        },
+        "type": "object",
+        "required": [
+          "cooldown",
+          "quantity",
+          "receiver_character",
+          "character"
+        ],
+        "title": "GiveGoldDataSchema",
+        "additionalProperties": false
+      },
+      "GiveGoldReponseSchema": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GiveGoldDataSchema"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "GiveGoldReponseSchema",
+        "additionalProperties": false
+      },
+      "GiveGoldSchema": {
+        "properties": {
+          "quantity": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Quantity",
+            "description": "Gold quantity."
+          },
+          "character": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "title": "Character",
+            "description": "Character name. The name of the character who will receive the gold."
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity",
+          "character"
+        ],
+        "title": "GiveGoldSchema",
+        "additionalProperties": false
+      },
+      "GiveItemDataSchema": {
+        "properties": {
+          "cooldown": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CooldownSchema"
+              }
+            ],
+            "description": "Cooldown details."
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SimpleItemSchema"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "Items given."
+          },
+          "receiver_character": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSchema"
+              }
+            ],
+            "description": "Character details of the receiving character."
+          },
+          "character": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CharacterSchema"
+              }
+            ],
+            "description": "Character details of the sending character."
+          }
+        },
+        "type": "object",
+        "required": [
+          "cooldown",
+          "items",
+          "receiver_character",
+          "character"
+        ],
+        "title": "GiveItemDataSchema",
+        "additionalProperties": false
+      },
+      "GiveItemReponseSchema": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GiveItemDataSchema"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "GiveItemReponseSchema",
+        "additionalProperties": false
+      },
+      "GiveItemsSchema": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SimpleItemSchema"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Items",
+            "description": "List of items to give"
+          },
+          "character": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "title": "Character",
+            "description": "Character name. The name of the character who will receive the items."
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "character"
+        ],
+        "title": "GiveItemsSchema",
+        "additionalProperties": false
+      },
       "GoldSchema": {
         "properties": {
           "quantity": {
@@ -8323,6 +9129,14 @@
             "type": "string",
             "title": "Description",
             "description": "Item description."
+          },
+          "conditions": {
+            "items": {
+              "$ref": "#/components/schemas/ConditionSchema"
+            },
+            "type": "array",
+            "title": "Conditions",
+            "description": "Item conditions. If applicable. Conditions for using or equipping the item."
           },
           "effects": {
             "items": {
@@ -8476,8 +9290,8 @@
           "sell_npc",
           "cancel_ge",
           "delete_item",
-          "deposit",
-          "withdraw",
+          "deposit_item",
+          "withdraw_item",
           "deposit_gold",
           "withdraw_gold",
           "equip",
@@ -8492,15 +9306,24 @@
           "rest",
           "use",
           "buy_bank_expansion",
-          "achievement"
+          "achievement",
+          "give_item",
+          "give_gold",
+          "receive_item",
+          "receive_gold",
+          "change_skin",
+          "rename"
         ],
         "title": "LogType"
       },
       "MapContentSchema": {
         "properties": {
           "type": {
-            "type": "string",
-            "title": "Type",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MapContentType"
+              }
+            ],
             "description": "Type of the content."
           },
           "code": {
@@ -8733,10 +9556,23 @@
             "title": "Email",
             "description": "Email."
           },
-          "subscribed": {
+          "member": {
             "type": "boolean",
-            "title": "Subscribed",
-            "description": "Subscribed for the current season."
+            "title": "Member",
+            "description": "Member status."
+          },
+          "member_expiration": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Expiration",
+            "description": "Member expiration date."
           },
           "status": {
             "allOf": [
@@ -8744,13 +9580,19 @@
                 "$ref": "#/components/schemas/AccountStatus"
               }
             ],
-            "description": "Member status."
+            "description": "Account status."
           },
           "badges": {
             "items": {},
             "type": "array",
             "title": "Badges",
             "description": "Account badges."
+          },
+          "skins": {
+            "items": {},
+            "type": "array",
+            "title": "Skins",
+            "description": "Skins owned."
           },
           "gems": {
             "type": "integer",
@@ -8777,8 +9619,9 @@
         "required": [
           "username",
           "email",
-          "subscribed",
+          "member",
           "status",
+          "skins",
           "gems",
           "achievements_points",
           "banned"
@@ -8829,6 +9672,11 @@
             "title": "Npc",
             "description": "Code of the NPC that sells/buys the item."
           },
+          "currency": {
+            "type": "string",
+            "title": "Currency",
+            "description": "Currency used to buy/sell the item. If it's not gold, it's the item code."
+          },
           "buy_price": {
             "oneOf": [
               {
@@ -8858,6 +9706,7 @@
         "required": [
           "code",
           "npc",
+          "currency",
           "buy_price",
           "sell_price"
         ],
@@ -8915,7 +9764,10 @@
       },
       "NPCType": {
         "type": "string",
-        "const": "merchant",
+        "enum": [
+          "merchant",
+          "trader"
+        ],
         "title": "NPCType"
       },
       "NPCType_a-zA-Z0-9_-_____": {
@@ -8933,6 +9785,11 @@
             "title": "Quantity",
             "description": "Item quantity."
           },
+          "currency": {
+            "type": "string",
+            "title": "Currency",
+            "description": "Currency used for the transaction."
+          },
           "price": {
             "type": "integer",
             "title": "Price",
@@ -8948,6 +9805,7 @@
         "required": [
           "code",
           "quantity",
+          "currency",
           "price",
           "total_price"
         ],
@@ -9024,6 +9882,82 @@
           "character"
         ],
         "title": "NpcMerchantTransactionSchema",
+        "additionalProperties": false
+      },
+      "PasswordResetConfirmSchema": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token",
+            "description": "Password reset token."
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 5,
+            "pattern": "^[^\\s]+$",
+            "title": "New Password",
+            "description": "Your new password."
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "new_password"
+        ],
+        "title": "PasswordResetConfirmSchema",
+        "additionalProperties": false
+      },
+      "PasswordResetRequestSchema": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Your email address."
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "PasswordResetRequestSchema",
+        "additionalProperties": false
+      },
+      "PasswordResetResponseSchema": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message."
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "PasswordResetResponseSchema",
+        "additionalProperties": false
+      },
+      "RateLimitSchema": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Type of rate limit."
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Value of the rate limit."
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "title": "RateLimitSchema",
         "additionalProperties": false
       },
       "RecyclingDataSchema": {
@@ -9275,6 +10209,103 @@
         "title": "RewardsSchema",
         "additionalProperties": false
       },
+      "SeasonBadgeSchema": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Badge code."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Badge description."
+          },
+          "required_points": {
+            "type": "integer",
+            "title": "Required Points",
+            "description": "Required achievement points to earn the badge."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "description",
+          "required_points"
+        ],
+        "title": "SeasonBadgeSchema",
+        "additionalProperties": false
+      },
+      "SeasonSchema": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Season name."
+          },
+          "number": {
+            "type": "integer",
+            "title": "Number",
+            "description": "Season number."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start Date",
+            "description": "Season start date."
+          },
+          "badges": {
+            "items": {
+              "$ref": "#/components/schemas/SeasonBadgeSchema"
+            },
+            "type": "array",
+            "title": "Badges",
+            "description": "Season badges with required achievement points."
+          },
+          "skins": {
+            "items": {
+              "$ref": "#/components/schemas/SeasonSkinSchema"
+            },
+            "type": "array",
+            "title": "Skins",
+            "description": "Season skins with required achievement points."
+          }
+        },
+        "type": "object",
+        "required": [
+          "badges",
+          "skins"
+        ],
+        "title": "SeasonSchema",
+        "additionalProperties": false
+      },
+      "SeasonSkinSchema": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Skin code."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Skin description."
+          },
+          "required_points": {
+            "type": "integer",
+            "title": "Required Points",
+            "description": "Required achievement points to earn the skin."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "description",
+          "required_points"
+        ],
+        "title": "SeasonSkinSchema",
+        "additionalProperties": false
+      },
       "SimpleEffectSchema": {
         "properties": {
           "code": {
@@ -9287,12 +10318,18 @@
             "type": "integer",
             "title": "Value",
             "description": "Effect value."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Description of the effect."
           }
         },
         "type": "object",
         "required": [
           "code",
-          "value"
+          "value",
+          "description"
         ],
         "title": "SimpleEffectSchema",
         "additionalProperties": false
@@ -9425,31 +10462,39 @@
       },
       "StatusSchema": {
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Server status"
-          },
           "version": {
             "type": "string",
             "title": "Version",
             "description": "Game version."
-          },
-          "max_level": {
-            "type": "integer",
-            "title": "Max Level",
-            "description": "Maximum level."
-          },
-          "characters_online": {
-            "type": "integer",
-            "title": "Characters Online",
-            "description": "Characters online."
           },
           "server_time": {
             "type": "string",
             "format": "date-time",
             "title": "Server Time",
             "description": "Server time."
+          },
+          "max_level": {
+            "type": "integer",
+            "title": "Max Level",
+            "description": "Maximum level."
+          },
+          "max_skill_level": {
+            "type": "integer",
+            "title": "Max Skill Level",
+            "description": "Maximum skill level."
+          },
+          "characters_online": {
+            "type": "integer",
+            "title": "Characters Online",
+            "description": "Characters online."
+          },
+          "season": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SeasonSchema"
+              }
+            ],
+            "description": "Current season details."
           },
           "announcements": {
             "items": {
@@ -9459,27 +10504,24 @@
             "title": "Announcements",
             "description": "Server announcements."
           },
-          "last_wipe": {
-            "type": "string",
-            "title": "Last Wipe",
-            "description": "Last server wipe."
-          },
-          "next_wipe": {
-            "type": "string",
-            "title": "Next Wipe",
-            "description": "Next server wipe."
+          "rate_limits": {
+            "items": {
+              "$ref": "#/components/schemas/RateLimitSchema"
+            },
+            "type": "array",
+            "title": "Rate Limits",
+            "description": "Rate limits."
           }
         },
         "type": "object",
         "required": [
-          "status",
           "version",
-          "max_level",
-          "characters_online",
           "server_time",
+          "max_level",
+          "max_skill_level",
+          "characters_online",
           "announcements",
-          "last_wipe",
-          "next_wipe"
+          "rate_limits"
         ],
         "title": "StatusSchema",
         "additionalProperties": false
@@ -9801,7 +10843,7 @@
             "maximum": 100.0,
             "minimum": 1.0,
             "title": "Quantity",
-            "description": "Item quantity. Applicable to utilitys only.",
+            "description": "Item quantity. Applicable to utilities only.",
             "default": 1
           }
         },

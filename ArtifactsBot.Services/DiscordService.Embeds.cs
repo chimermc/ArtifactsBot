@@ -85,6 +85,11 @@ public partial class DiscordService
             builder.AddField("Dropped By", BuildColumn(droppedByMonsters.Select(m => $"`{m.Code}` {GetDropRateNotation(m.Drops.First(d => d.Code == item.Code))}")));
         }
 
+        if (!string.IsNullOrEmpty(item.Description))
+        {
+            builder.AddField("Description", item.Description, true);
+        }
+
         return builder.Build();
     }
 
@@ -115,7 +120,7 @@ public partial class DiscordService
         return builder.Build();
     }
 
-    public Embed BuildSimulatorEmbed(CharacterStats characterStats, MonsterSchema monster, List<FightSimulatorResult> results, IEnumerable<string> items, bool isDeterministic, int characterLevel, string characterName = "Character")
+    public Embed BuildSimulatorEmbed(CharacterStats characterStats, MonsterSchema monster, List<FightSimulatorResult> results, IEnumerable<string> items, int characterLevel, string characterName = "Character")
     {
         List<string> offense = new(5);
         if (characterStats.FireAttack != 0) { offense.Add($"{characterStats.FireAttack} Fire Atk"); }
@@ -144,9 +149,7 @@ public partial class DiscordService
         int wins = results.Count(r => r.IsWin);
         int losses = total - wins;
 
-        StringBuilder message = new(isDeterministic
-            ? $"This fight is deterministic since neither fighter can block. The player {(wins > 0 ? "won" : "lost")} the fight."
-            : $"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)}% win rate).");
+        StringBuilder message = new($"Simulated {total} fight{Pluralize(total)}. The player won {wins} and lost {losses} ({Percentage(wins, total)}% win rate).");
         message.AppendLine();
 
         const string rounding = "0.0";
@@ -189,7 +192,7 @@ public partial class DiscordService
         }
 
         builder.AddField("Results", message);
-        builder.AddField("Note", "Rune effects, poison, and healing potions are not yet implemented in this simulator. It is otherwise up to date with Season 4.");
+        builder.AddField("Note", "Rune effects, poison, and healing potions are not yet implemented in this simulator. They will be added soon."); // Actually soon this time, I swear!
         return builder.Build();
     }
 
